@@ -10,7 +10,7 @@ async def refill(persona: str, med: str) -> dict[str, Any]:
         "med": med,
         "quantity": "30 tablets",
         "ready_at": (datetime.now() + timedelta(hours=4)).isoformat(),
-        "pharmacy": "Selvi Eczanesi, Beşiktaş",
+        "pharmacy": "CVS Pharmacy · Main St",
         "interaction_check": "no clinically significant interactions found",
     }
 

@@ -38,6 +38,7 @@ app.add_middleware(
 
 
 @app.get("/healthz")
+@app.get("/health")
 async def healthz():
     return {"ok": True, "version": "0.1.0"}
 
@@ -88,13 +89,13 @@ async def a2a_handshake(message: A2AMessage):
 
 class TTSRequest(BaseModel):
     text: str
-    lang: str = "tr-TR"
+    lang: str = "en-US"
     voice: str | None = None
 
 
 _TTS_VOICES = {
-    "tr-TR": "tr-TR-Wavenet-E",   # warm female TR voice
-    "en-US": "en-US-Neural2-F",
+    "en-US": "en-US-Neural2-F",   # warm female EN voice
+    "en-GB": "en-GB-Neural2-A",
 }
 
 

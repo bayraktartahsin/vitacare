@@ -5,7 +5,13 @@ import { PhoneCallModal } from "./PhoneCallModal";
 
 type Event = { kind: string; data: any };
 
-const API = process.env.NEXT_PUBLIC_AGENT_API || "http://localhost:8080";
+// Direct cross-origin to the agents service. Next.js rewrites buffer SSE
+// responses, so we hit the agents URL directly. CORS on the backend is
+// allow_origins=["*"] so this just works in dev (localhost) and prod alike.
+const API =
+  typeof window !== "undefined" && window.location.hostname !== "localhost"
+    ? "https://vitacare-agents-205100594497.europe-west1.run.app"
+    : "http://localhost:8080";
 
 const KIND_COLORS: Record<string, string> = {
   "sentinel.trigger": "text-warn",
@@ -24,9 +30,9 @@ const KIND_COLORS: Record<string, string> = {
 };
 
 const PERSONA_DISPLAY: Record<string, { name: string; sub: string }> = {
-  ahmet: { name: "Ahmet — Baba", sub: "+90 532 ███ ██ ██" },
-  aylin: { name: "Aylin", sub: "+90 533 ███ ██ ██" },
-  selin: { name: "Selin", sub: "+90 535 ███ ██ ██" },
+  robert: { name: "Robert — Dad",  sub: "+1 (415) ███-████" },
+  emma:   { name: "Emma",          sub: "+1 (212) ███-████" },
+  sarah:  { name: "Sarah",         sub: "+1 (415) ███-████" },
 };
 
 export function ScenarioRunner({ scenarioId, onClose }: { scenarioId: string; onClose: () => void }) {
@@ -63,13 +69,13 @@ export function ScenarioRunner({ scenarioId, onClose }: { scenarioId: string; on
         const data = JSON.parse(e.data);
         setEvents((es2) => [...es2, { kind, data }]);
         if (kind === "voice.call_placed") {
-          const personaId: string = data?.persona || "ahmet";
-          const display = PERSONA_DISPLAY[personaId] || PERSONA_DISPLAY.ahmet;
+          const personaId: string = data?.persona || "robert";
+          const display = PERSONA_DISPLAY[personaId] || PERSONA_DISPLAY.robert;
           setCallPayload({
             recipient: display.name,
             recipientSub: display.sub,
             text: data.text,
-            lang: data.lang || "tr-TR",
+            lang: data.lang || "en-US",
           });
           setCallOpen(true);
         }

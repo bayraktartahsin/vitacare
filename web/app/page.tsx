@@ -8,7 +8,7 @@ const SCENARIOS = [
   {
     id: "cascade",
     title: "The Cascade",
-    blurb: "Father's BP triggers a family-wide response. Voice call placed in Turkish.",
+    blurb: "Father's BP triggers a family-wide response. The agent calls Dad — Cloud TTS in-browser.",
     cohorts: ["Senior", "Adult"],
   },
   {
@@ -26,9 +26,9 @@ const SCENARIOS = [
 ];
 
 const PERSONAS = [
-  { id: "aylin", name: "Aylin", role: "32 — pregnant (T3)", cohort: "Pregnancy" },
-  { id: "ahmet", name: "Ahmet", role: "60 — hypertensive father", cohort: "Senior" },
-  { id: "selin", name: "Selin", role: "28 — caregiver daughter", cohort: "Adult" },
+  { id: "emma",   name: "Emma",   role: "32 — pregnant (T3)",        cohort: "Pregnancy" },
+  { id: "robert", name: "Robert", role: "60 — hypertensive father",  cohort: "Senior" },
+  { id: "sarah",  name: "Sarah",  role: "28 — caregiver daughter",   cohort: "Adult" },
 ];
 
 export default function Home() {

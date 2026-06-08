@@ -17,19 +17,15 @@ from ..llm import generate
 from ..mcp_clients import voice_telephony
 from .base import BaseSubAgent
 
-VOICE_SYSTEM_TR = """Sen bir kişinin VitaCare sağlık ajanısın. Aile üyelerine
-sıcak, kısa, doğal ifadelerle konuşursun. Bilgilendirir, panik yaratmazsın.
-Asla teşhis koymazsın, ilaç önermezsin. Karşındaki kişiyle, sanki sevdikleri
-birinin sağlık asistanıymışsın gibi konuşursun. SADECE konuşulacak Türkçe
-cümleyi döndür — başka açıklama yok."""
-
 VOICE_SYSTEM_EN = """You are a VitaCare personal health agent. You speak to
 family members warmly, briefly, and naturally. You inform without alarming. You
-never diagnose or prescribe. Output ONLY the spoken sentence — no commentary."""
+never diagnose or prescribe. Output ONLY the spoken sentence — no commentary,
+no quotation marks, no preamble."""
 
 
 def _system_for(lang: str) -> str:
-    return VOICE_SYSTEM_TR if lang.startswith("tr") else VOICE_SYSTEM_EN
+    # Demo runs in English. Multilingual paths remain for future expansion.
+    return VOICE_SYSTEM_EN
 
 
 class VoiceAgent(BaseSubAgent):
@@ -40,7 +36,7 @@ class VoiceAgent(BaseSubAgent):
         self.model = settings.gemini_model_flash
         self.live_model = settings.gemini_model_live
 
-    async def draft(self, brief: str, lang: str = "tr-TR") -> str:
+    async def draft(self, brief: str, lang: str = "en-US") -> str:
         """Use Gemini Flash to draft the natural-language line to be spoken."""
         return await generate(
             model=self.model,
@@ -49,7 +45,7 @@ class VoiceAgent(BaseSubAgent):
             temperature=0.6,
         )
 
-    async def speak_in_browser(self, text: str, lang: str = "tr-TR") -> dict[str, Any]:
+    async def speak_in_browser(self, text: str, lang: str = "en-US") -> dict[str, Any]:
         """Return a payload the demo plays via Gemini Live in the browser."""
         return {
             "kind": "tts",

@@ -16,8 +16,8 @@ async def book(persona: str, when: str, reason: str) -> dict[str, Any]:
     days_until_tue = (1 - base.weekday()) % 7 or 7
     slot = base + timedelta(days=days_until_tue)
     return {
-        "clinic": "Acıbadem Maslak",
-        "doctor": "Dr. Eylül Kaya, GP",
+        "clinic": "Northwell Health · Downtown",
+        "doctor": "Dr. Emily Carter, GP",
         "start": slot.isoformat(),
         "duration_min": 30,
         "reason": reason,

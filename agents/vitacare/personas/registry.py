@@ -23,7 +23,7 @@ class Persona:
     role: str               # human-readable: "pregnant mother", "hypertensive father", "caregiver daughter"
     cohort: str             # "pregnancy" | "family" | "adult" | "senior"
     phone_e164: str = ""    # for Twilio outbound
-    lang: str = "tr-TR"
+    lang: str = "en-US"
 
     sentinel: SentinelAgent = field(init=False)
     chronicler: ChroniclerAgent = field(init=False)
@@ -54,37 +54,40 @@ class Persona:
 
 
 def _build_personas() -> list[Persona]:
-    aylin = Persona(
-        id="aylin",
-        name="Aylin",
+    emma = Persona(
+        id="emma",
+        name="Emma",
         role="32 — pregnant, trimester 3, gestational diabetes risk",
         cohort="pregnancy",
         phone_e164=settings.demo_aylin_phone,
+        lang="en-US",
     )
-    ahmet = Persona(
-        id="ahmet",
-        name="Ahmet",
-        role="60 — hypertensive father, lives in İzmir",
+    robert = Persona(
+        id="robert",
+        name="Robert",
+        role="60 — hypertensive father, lives in Phoenix",
         cohort="senior",
         phone_e164=settings.demo_ahmet_phone,
+        lang="en-US",
     )
-    selin = Persona(
-        id="selin",
-        name="Selin",
-        role="28 — caregiver daughter, lives in İstanbul",
+    sarah = Persona(
+        id="sarah",
+        name="Sarah",
+        role="28 — caregiver daughter, lives in San Francisco",
         cohort="adult",
         phone_e164=settings.demo_selin_phone,
+        lang="en-US",
     )
 
     # Wire the family consent mesh.
-    aylin.consent.allow_all(with_persona="selin")
-    aylin.consent.set("husband", "vitals", "allow")
-    aylin.consent.set("husband", "appointments", "allow")
-    ahmet.consent.allow_all(with_persona="selin")
-    selin.consent.allow_all(with_persona="aylin")
-    selin.consent.allow_all(with_persona="ahmet")
+    emma.consent.allow_all(with_persona="sarah")
+    emma.consent.set("partner", "vitals", "allow")
+    emma.consent.set("partner", "appointments", "allow")
+    robert.consent.allow_all(with_persona="sarah")
+    sarah.consent.allow_all(with_persona="emma")
+    sarah.consent.allow_all(with_persona="robert")
 
-    return [aylin, ahmet, selin]
+    return [emma, robert, sarah]
 
 
 PERSONAS: list[Persona] = _build_personas()

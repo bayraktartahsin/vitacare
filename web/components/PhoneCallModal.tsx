@@ -12,7 +12,10 @@ type Props = {
   onClose: () => void;
 };
 
-const API = process.env.NEXT_PUBLIC_AGENT_API || "http://localhost:8080";
+const API =
+  typeof window !== "undefined" && window.location.hostname !== "localhost"
+    ? "https://vitacare-agents-205100594497.europe-west1.run.app"
+    : "http://localhost:8080";
 
 function fmt(s: number) {
   const m = Math.floor(s / 60).toString().padStart(1, "0");

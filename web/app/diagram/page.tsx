@@ -112,9 +112,9 @@ function ThreeRings() {
         </text>
 
         {/* Persona nodes */}
-        <PersonaNode cx={250} cy={325} label="Aylin" sub="T3 pregnant" tone="#f7768e" />
-        <PersonaNode cx={450} cy={325} label="Ahmet" sub="Senior · BP" tone="#e0af68" />
-        <PersonaNode cx={350} cy={385} label="Selin" sub="Caregiver" tone="#9ece6a" />
+        <PersonaNode cx={250} cy={325} label="Emma"   sub="T3 pregnant" tone="#f7768e" />
+        <PersonaNode cx={450} cy={325} label="Robert" sub="Senior · BP" tone="#e0af68" />
+        <PersonaNode cx={350} cy={385} label="Sarah"  sub="Caregiver"   tone="#9ece6a" />
 
         {/* A2A arrows */}
         <Arrow x1={290} y1={325} x2={410} y2={325} />
