@@ -17,9 +17,8 @@ Target length: 3:00. Recorded on the live Cloud Run demo at `vitacare.gravitilab
   - `clinician.assessment` (ESC guideline cited)
   - `diplomat.a2a.send` → Selin
   - `concierge.gp_booked` (real Google Calendar event appears in a side window)
-  - `voice.call_placed` (a real Twilio call to Ahmet's phone — we cut to a phone speaker playing the Turkish voice)
-- Phone audio plays the Turkish line; English captions show the translation
-- VO: "Ahmet's father got a real phone call from his daughter's network. In Turkish. While she was in a meeting."
+  - `voice.call_placed` — a simulated phone-call modal opens ("Ahmet's phone, ringing..."), a Gemini Live audio session connects, the Turkish line streams in real time with a live waveform and word-by-word captions
+- VO: "The agent doesn't just message Ahmet — it calls him. In Turkish. Live. Powered by Gemini Live in the browser. No telephony provider, no third-party service. Pure Google."
 
 ## 1:30 — Scenario 2: The Pregnancy (45 s)
 - Click "Pregnancy"

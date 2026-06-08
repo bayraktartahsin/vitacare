@@ -124,7 +124,7 @@ Per-relationship, per-data-type permissions. *Mom's agent can see your BP. Not y
 | **ClinicMCP**      | Mocked (or wraps Vita Praxis) | Books GP visits; doctor-side handoff               |
 | **LabMCP**         | Mocked           | Parses lab PDFs → timeline; trend detection         |
 | **InsurerMCP**     | Mocked           | Files claims, processes EOBs                        |
-| **VoiceMCP**       | Twilio (real)    | Outbound voice calls (the "agent calls Mom" demo)   |
+| **VoiceMCP**       | Gemini Live (real) | In-browser simulated phone call — real Turkish voice via Gemini Live audio stream. NO telephony provider. |
 
 ---
 
@@ -188,7 +188,7 @@ Healthcare's biggest unsolved problem isn't diagnosis — it's coordination acro
 VitaCare is the first agent-to-agent care network. Each family member runs a swarm of 6 personal agents (Sentinel, Chronicler, Clinician, Concierge, Diplomat, Voice) built on Google's Agent Development Kit. The Diplomats use the A2A protocol to coordinate across people: detecting trends, booking appointments, refilling meds, filing claims, and calling family members — all autonomously, all consent-gated through a per-relationship permissions mesh. The shared Family Health Graph (Vertex AI Vector Search) lets the network spot cross-generational and cross-time patterns no single clinician would catch.
 
 **Technologies used:**
-Gemini 2.5 Pro · Gemini 2.5 Flash · Gemini Live · Agent Development Kit (ADK) · A2A Protocol · Model Context Protocol (MCP) · Vertex AI Vector Search · Firestore · Cloud Run · Cloud Tasks · Identity Platform · Google Search Grounding · Twilio Programmable Voice (outbound calls) · Next.js (demo frontend) · Python · TypeScript
+Gemini 2.5 Pro · Gemini 2.5 Flash · Gemini Live · Cloud Text-to-Speech · Agent Development Kit (ADK) · A2A Protocol · Model Context Protocol (MCP) · Vertex AI Vector Search · Firestore · Cloud Run · Cloud Tasks · Identity Platform · Google Search Grounding · Google Calendar API · Next.js · Python · TypeScript. **100% Google stack** — no third-party AI providers, no third-party telephony.
 
 **Data sources:**
 WHO clinical guidelines · CDC vaccination schedules · ESC hypertension protocols · ACOG pregnancy guidelines · DrugBank interactions (subset) · Synthetic HealthKit time series for the 3 personas · Synthetic lab PDFs · clinicaltrials.gov · PubMed via grounding
@@ -197,7 +197,7 @@ WHO clinical guidelines · CDC vaccination schedules · ESC hypertension protoco
 (filled in last 24h based on actual build experience)
 
 **Third-party integrations:**
-Twilio Programmable Voice (outbound voice calls) — Graviti Labs has its own Twilio account, fully authorized. Google Calendar (real). All clinical guideline content cited and used under fair-use/research basis. HealthKit/lab data is synthetic for personas.
+None for AI or voice — the entire stack is Google (Gemini Live, Cloud TTS, Vertex AI, Cloud Run, Firestore, Identity Platform). The only external service touched is Google Calendar API (Google-owned, OAuth-gated by the user). All clinical guideline content cited and used under fair-use/research basis. HealthKit/lab data is synthetic for personas.
 
 ### Submission Q's (to fill):
 - GCP familiarity (1-5): **4**

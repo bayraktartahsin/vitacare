@@ -22,12 +22,7 @@ class Settings(BaseSettings):
     google_oauth_client_secret: str = ""
     google_oauth_refresh_token: str = ""
 
-    # Twilio
-    twilio_account_sid: str = ""
-    twilio_auth_token: str = ""
-    twilio_from_number: str = ""
-
-    # Demo personas
+    # Demo recipient labels (shown in simulated phone-call UI — not dialed)
     demo_ahmet_phone: str = ""
     demo_aylin_phone: str = ""
     demo_selin_phone: str = ""

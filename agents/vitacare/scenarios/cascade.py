@@ -74,7 +74,7 @@ class CascadeScenario(Scenario):
         yield AgentEvent(kind="voice.call_placed", persona="ahmet", payload={
             "lang": "tr-TR",
             "text": speech_tr,
-            "twilio": call,
+            "live_session": call,
             "translation_en": (
                 "Dad, you have a doctor's appointment Tuesday at 10. Selin arranged it, "
                 "just go. Your BP was a bit high the last three mornings, that's what it's for. "

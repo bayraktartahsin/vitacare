@@ -69,11 +69,11 @@
             │  └── Voice → Gemini Live + Twilio   │
             └──┬──────────────┬──────────┬────────┘
                │              │          │
-       ┌───────▼───┐  ┌───────▼───┐  ┌───▼─────────┐
-       │ Vertex AI │  │ Firestore │  │ Twilio +    │
-       │ Vector +  │  │ state +   │  │ Google Cal  │
-       │ Embeddings│  │ consent   │  │ (real APIs) │
-       └───────────┘  └───────────┘  └─────────────┘
+       ┌───────▼───┐  ┌───────▼───┐  ┌───▼─────────────┐
+       │ Vertex AI │  │ Firestore │  │ Google Calendar │
+       │ Vector +  │  │ state +   │  │ + Gemini Live   │
+       │ Embeddings│  │ consent   │  │ + Cloud TTS     │
+       └───────────┘  └───────────┘  └─────────────────┘
 ```
 
 ## A2A message shape
@@ -102,4 +102,4 @@ if msg.requires_consent and not can_share(self.consent, msg.to_persona, msg.cate
 1. `gcloud run deploy vitacare-agents --source agents/`
 2. `gcloud run deploy vitacare-web --source web/ --set-env-vars NEXT_PUBLIC_AGENT_API=https://vitacare-agents-xxx.run.app`
 3. Map `vitacare.gravitilabs.com` → vitacare-web via Cloud Run domain mapping
-4. Wire Google Calendar OAuth + Twilio credentials in vitacare-agents env
+4. Wire Google Calendar OAuth (only third-party credential needed) in vitacare-agents env. Voice is end-to-end Google: Gemini Live for real-time, Cloud TTS for pre-rendered.

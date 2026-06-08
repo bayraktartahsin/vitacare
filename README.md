@@ -52,14 +52,14 @@ vitacare/
 
 ## Tech stack
 
-Gemini 2.5 Pro · Gemini 2.5 Flash · Gemini Live · ADK · A2A Protocol · MCP · Vertex AI Vector Search · Firestore · Cloud Run · Cloud Tasks · Identity Platform · Twilio Voice · Next.js · Python
+Gemini 2.5 Pro · Gemini 2.5 Flash · Gemini Live · Cloud Text-to-Speech · ADK · A2A Protocol · MCP · Vertex AI Vector Search · Firestore · Cloud Run · Cloud Tasks · Identity Platform · Google Calendar · Next.js · Python · **100% Google stack — no third-party telephony, no external AI providers**
 
 ## Demo
 
 Live demo: `https://vitacare.gravitilabs.com` *(deploys T-12h before submission)*
 
 3 scenarios:
-1. **The Cascade** — Father's BP trend triggers daughter's calendar; agent calls father in Turkish
+1. **The Cascade** — Father's BP trend triggers a family-wide response; agent "calls" father via an in-browser Gemini Live phone-call modal (real Turkish voice, live waveform, no telephony provider)
 2. **The Pregnancy** — Pre-eclampsia signal triggers husband-side coordination
 3. **The Coordination** — Caregiver's morning, where both parents' agents have prepped her day
 
