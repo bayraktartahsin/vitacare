@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.env
+.env.local
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+.next/
+out/
+.turbo/
+*.log
+npm-debug.log*
+
+# Secrets
+.env*
+!.env.example
+service-account*.json
+gcp-key*.json
+twilio-creds*.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Build artifacts
+*.tsbuildinfo
+
+# Local data
+data/
+*.db
+*.sqlite
