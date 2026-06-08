@@ -1,13 +1,9 @@
-FROM node:20-alpine AS deps
-WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm install --no-audit --no-fund
-
 FROM node:20-alpine AS builder
 WORKDIR /app
 ARG NEXT_PUBLIC_AGENT_API
 ENV NEXT_PUBLIC_AGENT_API=${NEXT_PUBLIC_AGENT_API}
-COPY --from=deps /app/node_modules ./node_modules
+COPY package.json package-lock.json* ./
+RUN npm ci --no-audit --no-fund || npm install --no-audit --no-fund
 COPY . .
 RUN npm run build
 
