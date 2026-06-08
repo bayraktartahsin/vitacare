@@ -63,21 +63,33 @@ Live demo: `https://vitacare.gravitilabs.com` *(deploys T-12h before submission)
 2. **The Pregnancy** — Pre-eclampsia signal triggers husband-side coordination
 3. **The Coordination** — Caregiver's morning, where both parents' agents have prepped her day
 
-## Local dev
+## Run the demo locally (2 min)
+
+You need: Python 3.11+, Node 20+, a Gemini API key from [aistudio.google.com](https://aistudio.google.com/apikey), and `gcloud auth application-default login` for Cloud TTS.
 
 ```bash
-# Backend (Python agents)
+git clone https://github.com/bayraktartahsin/vitacare && cd vitacare
+
+# 1. Agents backend (FastAPI on :8080)
 cd agents
-uv sync
-uv run vitacare
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e .
+cp .env.example .env   # then edit GEMINI_API_KEY=AIza...
+python -m vitacare.main &
 
-# Frontend (Next.js demo)
-cd web
-npm install
-npm run dev
+# 2. Web demo (Next.js on :3000)
+cd ../web
+npm install && npm run dev
+```
 
-# Mock MCP servers
-cd mcp_servers && ./run_all.sh
+Open <http://localhost:3000>, click **The Cascade**, wait ~7 seconds → the phone-call modal slides up with real Turkish voice. (Click anywhere on the page first to satisfy browser autoplay rules.)
+
+For the architecture diagram alone, visit <http://localhost:3000/diagram>.
+
+To run the agents offline against canned data only (no Gemini key required, useful for CI):
+
+```bash
+cd agents && python scripts/smoke.py cascade
 ```
 
 ## License
