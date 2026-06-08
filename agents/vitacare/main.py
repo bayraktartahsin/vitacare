@@ -15,6 +15,8 @@ import logging
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
+from pydantic import BaseModel
 from sse_starlette.sse import EventSourceResponse
 
 from .a2a.messages import A2AMessage
@@ -61,7 +63,8 @@ async def run_scenario(scenario_id: str):
 
     async def event_stream():
         async for event in scenario.run():
-            yield {"event": event.kind, "data": json.dumps(event.payload)}
+            data = {"persona": event.persona, **event.payload}
+            yield {"event": event.kind, "data": json.dumps(data, default=str)}
 
     return EventSourceResponse(event_stream())
 
@@ -74,6 +77,38 @@ async def a2a_handshake(message: A2AMessage):
         raise HTTPException(404, "unknown target persona")
     reply = await target.diplomat.handle_inbound(message)
     return reply.model_dump()
+
+
+class TTSRequest(BaseModel):
+    text: str
+    lang: str = "tr-TR"
+    voice: str | None = None
+
+
+_TTS_VOICES = {
+    "tr-TR": "tr-TR-Wavenet-E",   # warm female TR voice
+    "en-US": "en-US-Neural2-F",
+}
+
+
+@app.post("/tts")
+async def synthesize(req: TTSRequest):
+    """Cloud Text-to-Speech endpoint — returns MP3 bytes the browser plays.
+
+    This is the audio the simulated phone-call modal plays. Pure Google.
+    """
+    try:
+        from google.cloud import texttospeech  # lazy import so the module loads even if creds missing
+    except ImportError as e:
+        raise HTTPException(500, f"texttospeech not installed: {e}") from e
+    client = texttospeech.TextToSpeechClient()
+    voice_name = req.voice or _TTS_VOICES.get(req.lang, _TTS_VOICES["en-US"])
+    audio = client.synthesize_speech(
+        input=texttospeech.SynthesisInput(text=req.text),
+        voice=texttospeech.VoiceSelectionParams(language_code=req.lang, name=voice_name),
+        audio_config=texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3),
+    )
+    return Response(content=audio.audio_content, media_type="audio/mpeg")
 
 
 def run():
