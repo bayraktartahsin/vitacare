@@ -33,6 +33,12 @@ const PERSONAS = [
 
 export default function Home() {
   const [scenario, setScenario] = useState<string | null>(null);
+  const [runId, setRunId] = useState(0);
+
+  const runScenario = (id: string) => {
+    setScenario(id);
+    setRunId((r) => r + 1);
+  };
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-10">
@@ -61,7 +67,8 @@ export default function Home() {
           {SCENARIOS.map((s) => (
             <button
               key={s.id}
-              onClick={() => setScenario(s.id)}
+              data-testid={`scenario-${s.id}`}
+              onClick={() => runScenario(s.id)}
               className="rounded-xl border border-line bg-panel p-5 text-left transition hover:border-accent"
             >
               <div className="text-xs uppercase tracking-widest text-ink2">
@@ -77,7 +84,7 @@ export default function Home() {
 
       {scenario && (
         <section className="mt-10">
-          <ScenarioRunner scenarioId={scenario} onClose={() => setScenario(null)} />
+          <ScenarioRunner key={`${scenario}-${runId}`} scenarioId={scenario} onClose={() => setScenario(null)} />
         </section>
       )}
 
@@ -86,7 +93,8 @@ export default function Home() {
         <a className="text-accent hover:underline" href="https://gravitilabs.com">
           Graviti Labs
         </a>{" "}
-        · Gemini · ADK · A2A · MCP · Vertex AI · Cloud Run · Twilio
+        · Gemini · ADK · A2A · MCP · Vertex AI · Cloud Run · Cloud TTS ·{" "}
+        <span className="text-ok">100% Google stack</span>
       </footer>
     </main>
   );

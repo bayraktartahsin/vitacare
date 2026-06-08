@@ -52,6 +52,7 @@ class ClinicianAgent(BaseSubAgent):
         )
         result = await generate_json(
             model=self.model,
+            fallback_model=settings.gemini_model_flash,
             system=CLINICIAN_SYSTEM,
             prompt=prompt,
             schema=CLINICIAN_SCHEMA,

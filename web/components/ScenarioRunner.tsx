@@ -45,58 +45,57 @@ export function ScenarioRunner({ scenarioId, onClose }: { scenarioId: string; on
     setDone(false);
     setCallOpen(false);
     setCallPayload(null);
-    const url = `${API}/scenario/${scenarioId}/run`;
-    const ctrl = new AbortController();
 
-    (async () => {
+    // Native EventSource for SSE — more reliable than fetch+manual parsing.
+    const es = new EventSource(`${API}/scenario/${scenarioId}/stream`);
+    const KNOWN_EVENTS = [
+      "scenario.start", "scenario.end",
+      "sentinel.trigger",
+      "clinician.assessment",
+      "chronicler.recall",
+      "concierge.gp_booked", "concierge.ob_booked", "concierge.daily_block",
+      "diplomat.a2a.send", "diplomat.a2a.recv",
+      "voice.draft", "voice.speak", "voice.call_placed",
+    ];
+
+    const handler = (e: MessageEvent, kind: string) => {
       try {
-        const res = await fetch(url, { method: "POST", signal: ctrl.signal });
-        if (!res.body) return;
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-        let buf = "";
-        while (true) {
-          const { done: streamDone, value } = await reader.read();
-          if (streamDone) break;
-          buf += decoder.decode(value, { stream: true });
-          const parts = buf.split("\n\n");
-          buf = parts.pop() || "";
-          for (const part of parts) {
-            const lines = part.split("\n");
-            const evLine = lines.find((l) => l.startsWith("event: "));
-            const dataLine = lines.find((l) => l.startsWith("data: "));
-            if (evLine && dataLine) {
-              try {
-                const kind = evLine.slice(7).trim();
-                const data = JSON.parse(dataLine.slice(6));
-                setEvents((es) => [...es, { kind, data }]);
-
-                // Open the phone modal when a call is placed
-                if (kind === "voice.call_placed") {
-                  const personaId: string = data?.persona || "ahmet";
-                  const display = PERSONA_DISPLAY[personaId] || PERSONA_DISPLAY.ahmet;
-                  setCallPayload({
-                    recipient: display.name,
-                    recipientSub: display.sub,
-                    text: data.text,
-                    lang: data.lang || "tr-TR",
-                  });
-                  setCallOpen(true);
-                }
-              } catch {}
-            }
-          }
+        const data = JSON.parse(e.data);
+        setEvents((es2) => [...es2, { kind, data }]);
+        if (kind === "voice.call_placed") {
+          const personaId: string = data?.persona || "ahmet";
+          const display = PERSONA_DISPLAY[personaId] || PERSONA_DISPLAY.ahmet;
+          setCallPayload({
+            recipient: display.name,
+            recipientSub: display.sub,
+            text: data.text,
+            lang: data.lang || "tr-TR",
+          });
+          setCallOpen(true);
         }
-      } catch {
-        setEvents([
-          { kind: "demo.note", data: { msg: "agent backend not reachable — start `uv run vitacare` in /agents" } },
-        ]);
-      } finally {
-        setDone(true);
-      }
-    })();
+        if (kind === "scenario.end") {
+          setDone(true);
+          es.close();
+        }
+      } catch {}
+    };
 
-    return () => ctrl.abort();
+    const listeners: Array<[string, (e: MessageEvent) => void]> = KNOWN_EVENTS.map((kind) => {
+      const fn = (e: MessageEvent) => handler(e, kind);
+      es.addEventListener(kind, fn as EventListener);
+      return [kind, fn];
+    });
+
+    es.onerror = () => {
+      // Connection closed by server (normal at end-of-scenario) or unreachable.
+      es.close();
+      setDone(true);
+    };
+
+    return () => {
+      listeners.forEach(([kind, fn]) => es.removeEventListener(kind, fn as EventListener));
+      es.close();
+    };
   }, [scenarioId]);
 
   return (

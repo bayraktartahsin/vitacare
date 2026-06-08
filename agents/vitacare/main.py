@@ -55,18 +55,25 @@ async def get_persona_state(persona_id: str):
     return persona.snapshot()
 
 
-@app.post("/scenario/{scenario_id}/run")
-async def run_scenario(scenario_id: str):
+async def _scenario_event_stream(scenario_id: str):
     scenario = SCENARIOS.get(scenario_id)
     if not scenario:
         raise HTTPException(404, "unknown scenario")
+    async for event in scenario.run():
+        data = {"persona": event.persona, **event.payload}
+        yield {"event": event.kind, "data": json.dumps(data, default=str)}
 
-    async def event_stream():
-        async for event in scenario.run():
-            data = {"persona": event.persona, **event.payload}
-            yield {"event": event.kind, "data": json.dumps(data, default=str)}
 
-    return EventSourceResponse(event_stream())
+@app.post("/scenario/{scenario_id}/run")
+async def run_scenario(scenario_id: str):
+    """POST variant — kept for tools that prefer POST semantics."""
+    return EventSourceResponse(_scenario_event_stream(scenario_id))
+
+
+@app.get("/scenario/{scenario_id}/stream")
+async def stream_scenario(scenario_id: str):
+    """GET variant — native browser EventSource compatibility."""
+    return EventSourceResponse(_scenario_event_stream(scenario_id))
 
 
 @app.post("/a2a/handshake")
