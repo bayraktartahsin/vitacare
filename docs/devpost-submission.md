@@ -21,8 +21,10 @@ Copy-paste these into the Devpost project form on https://googlestartupsaiagents
 |---|---|
 | Video (3 min) | _to be filled on submission day_ |
 | Code | https://github.com/bayraktartahsin/vitacare |
-| Testing access (live demo) | https://vitacare-web-<cloud-run-hash>.run.app  *(or vitacare.gravitilabs.com)* |
+| Testing access (live demo) | **https://vitacare-web-205100594497.europe-west1.run.app** |
 | Architecture diagram | https://github.com/bayraktartahsin/vitacare/blob/main/docs/architecture-diagram.png |
+
+**Backend (agents API) endpoint:** https://vitacare-agents-205100594497.europe-west1.run.app · `/personas` · `/scenario/{id}/stream` · `/tts` · `/a2a/handshake`
 
 ---
 

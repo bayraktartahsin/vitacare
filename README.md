@@ -56,7 +56,9 @@ Gemini 2.5 Pro · Gemini 2.5 Flash · Gemini Live · Cloud Text-to-Speech · ADK
 
 ## Demo
 
-Live demo: `https://vitacare.gravitilabs.com` *(deploys T-12h before submission)*
+**Live demo:** <https://vitacare-web-205100594497.europe-west1.run.app>
+**Agents API:** <https://vitacare-agents-205100594497.europe-west1.run.app>
+**Architecture diagram:** <https://vitacare-web-205100594497.europe-west1.run.app/diagram> (or [docs/architecture-diagram.png](docs/architecture-diagram.png))
 
 3 scenarios:
 1. **The Cascade** — Father's BP trend triggers a family-wide response; agent "calls" father via an in-browser Gemini Live phone-call modal (real Turkish voice, live waveform, no telephony provider)
