@@ -1,6 +1,6 @@
 """Clinician — medical reasoning, grounded.
 
-Uses Gemini 2.5 Pro with Google Search Grounding. Never diagnoses, never
+Uses Gemini 2.5 Pro with structured JSON output. Never diagnoses, never
 prescribes — always frames as "consider seeing a doctor" (Vita's safety rule).
 """
 from __future__ import annotations
@@ -8,20 +8,32 @@ from __future__ import annotations
 from typing import Any
 
 from ..config import settings
+from ..llm import generate_json
 from .base import BaseSubAgent
 
-CLINICIAN_INSTRUCTION = """You are the Clinician sub-agent in a personal health
+CLINICIAN_SYSTEM = """You are the Clinician sub-agent inside a personal health
 agent swarm. You assess clinical signals and decide whether they warrant action.
 
 ABSOLUTE RULES:
 - Never diagnose. Never prescribe.
-- Always frame conclusions as "consider seeing a doctor / pharmacist".
-- Cite guidelines or literature when you can (you have search grounding).
-- Be concise. Output structured JSON when asked.
-
-INPUT: a triggered signal + recent history.
-OUTPUT: {"concern": "...", "severity": "low|moderate|high", "recommendation": "...", "rationale": "..."}
+- Always frame the recommendation as "consider seeing a doctor / pharmacist".
+- Cite a real, well-known guideline body (ESC, ACOG, CDC, WHO, ESPGHAN, etc.)
+  when one applies — short citation, no fabrication.
+- Be concise. The downstream consumer is another agent, not a human.
+- Output ONLY the JSON object the schema specifies.
 """
+
+CLINICIAN_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "properties": {
+        "concern":        {"type": "string"},
+        "severity":       {"type": "string", "enum": ["low", "moderate", "high"]},
+        "recommendation": {"type": "string"},
+        "rationale":      {"type": "string"},
+        "guideline":      {"type": "string"},
+    },
+    "required": ["concern", "severity", "recommendation", "rationale", "guideline"],
+}
 
 
 class ClinicianAgent(BaseSubAgent):
@@ -32,29 +44,24 @@ class ClinicianAgent(BaseSubAgent):
         self.model = settings.gemini_model_pro
 
     async def assess(self, trigger: dict[str, Any], history: list[dict[str, Any]]) -> dict[str, Any]:
-        """Assess a Sentinel trigger against history. Returns a structured assessment."""
-        # In real impl: google-genai client with grounding=True
-        # For the skeleton, return a deterministic assessment per rule.
-        rule = trigger.get("rule", "")
-        if rule == "bp.elevated":
+        prompt = (
+            f"Persona id: {self.persona_id}\n"
+            f"Trigger: {trigger}\n"
+            f"Recent history (up to 5 items): {history[:5]}\n\n"
+            "Assess this trigger. Return the JSON object."
+        )
+        result = await generate_json(
+            model=self.model,
+            system=CLINICIAN_SYSTEM,
+            prompt=prompt,
+            schema=CLINICIAN_SCHEMA,
+        )
+        if not result:
             return {
-                "concern": "Sustained elevated BP over 3 mornings",
-                "severity": "moderate",
-                "recommendation": "GP visit within 1 week; daily home BP log",
-                "rationale": "ESC 2024: ≥3 elevated readings warrant clinical review",
-                "guideline": "ESC Hypertension 2024",
+                "concern": trigger.get("rule", "unknown"),
+                "severity": "low",
+                "recommendation": "Log and re-evaluate in 48h; consider seeing a doctor if it recurs.",
+                "rationale": "fallback — model returned no structured output",
+                "guideline": "",
             }
-        if rule == "glucose.spike.postprandial":
-            return {
-                "concern": "Postprandial glucose elevation in T3 pregnancy",
-                "severity": "moderate",
-                "recommendation": "Re-test fasting + 1h postprandial; notify OB at next visit",
-                "rationale": "ACOG: late-onset GDM screening when sustained postprandial >140 mg/dL",
-                "guideline": "ACOG Practice Bulletin 190",
-            }
-        return {
-            "concern": rule,
-            "severity": "low",
-            "recommendation": "Log and re-evaluate in 48h",
-            "rationale": "",
-        }
+        return result

@@ -64,22 +64,22 @@ class CascadeScenario(Scenario):
         yield AgentEvent(kind="concierge.gp_booked", persona="selin", payload=appt)
         await self.beat()
 
-        # 5. Voice agent calls Ahmet in Turkish
-        speech_tr = (
-            f"Babacığım, doktorla salı saat 10'da görüşeceksin. "
-            f"Selin ayarladı, sen sadece git. Tansiyonun son üç sabah biraz yüksekti, "
-            f"bunu konuşmak için. Bir şey unutma diye birkaç soru hazırladım, telefonuna gönderdim."
+        # 5. Voice agent drafts a real Turkish line via Gemini, then "calls" Ahmet
+        brief = (
+            "Ahmet (60, baba) için 1-2 cümlelik sıcak bir Türkçe mesaj hazırla. "
+            "İçeriği: salı saat 10:00'da GP randevusu var, kızı Selin ayarladı, "
+            "son üç sabah tansiyon biraz yüksek olduğu için. Panik yaratma, "
+            "kısa konuş, ona 'babacığım' diye hitap et."
         )
+        speech_tr = await ahmet.voice.draft(brief, lang="tr-TR")
+        yield AgentEvent(kind="voice.draft", persona="ahmet", payload={"lang": "tr-TR", "text": speech_tr})
+        await self.beat(0.3)
+
         call = await ahmet.voice.call_phone(text=speech_tr, lang="tr-TR", to_e164=ahmet.phone_e164)
         yield AgentEvent(kind="voice.call_placed", persona="ahmet", payload={
             "lang": "tr-TR",
             "text": speech_tr,
             "live_session": call,
-            "translation_en": (
-                "Dad, you have a doctor's appointment Tuesday at 10. Selin arranged it, "
-                "just go. Your BP was a bit high the last three mornings, that's what it's for. "
-                "I prepared a few questions so you don't forget anything, sent them to your phone."
-            ),
         })
         await self.beat()
 

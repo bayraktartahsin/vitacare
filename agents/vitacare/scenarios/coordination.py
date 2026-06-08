@@ -54,14 +54,17 @@ class CoordinationScenario(Scenario):
         })
         await self.beat()
 
-        # 4. Voice agent offers to handle the calls itself
-        speech = (
-            "Three things on your plate this morning. I can call Mom about her flu shot myself "
-            "if you prefer — just say the word. Dad's labs are fine, I'll explain the numbers "
-            "to him if you don't have time."
+        # 4. Voice agent offers to handle the calls itself — drafted live in English by Gemini
+        brief = (
+            "Selin (28, caregiver daughter) için günaydın brifing. Üç görev: "
+            "annene grip aşısı hatırlat, babasının lab sonuçlarını ona açıkla, "
+            "Aylin'in salı OB randevusunu onayla. "
+            "Selin'e doğal ve kısa İngilizce cümlelerle hitap et. "
+            "Ajan olarak aramaları senin yapabileceğini teklif et."
         )
+        speech = await selin.voice.draft(brief, lang="en-US")
         ev = await selin.voice.speak_in_browser(text=speech, lang="en-US")
-        yield AgentEvent(kind="voice.speak", persona="selin", payload=ev)
+        yield AgentEvent(kind="voice.speak", persona="selin", payload={**ev, "text": speech})
         await self.beat()
 
         yield AgentEvent(kind="scenario.end", persona="selin", payload={

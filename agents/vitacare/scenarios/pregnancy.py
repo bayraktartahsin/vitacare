@@ -63,15 +63,17 @@ class PregnancyScenario(Scenario):
         yield aylin.diplomat.trace(msg, "send")
         await self.beat()
 
-        # 6. Voice in TR
-        speech_tr = (
-            "Aylinciğim, salı 14:00'te kontrol var, OB takvimine eklendi. "
-            "Bu hafta ağır şey kaldırma — market alışverişini halletmesini hatırlattım."
+        # 6. Voice in TR — drafted live by Gemini
+        brief = (
+            "Aylin (32, hamile T3) için 1-2 cümlelik sıcak bir Türkçe mesaj hazırla. "
+            "İçerik: salı 14:00 OB kontrolü takvime eklendi, bu hafta ağır şey kaldırma, "
+            "eşi market alışverişini halledecek. Ona 'Aylinciğim' diye hitap et, kısa tut."
         )
+        speech_tr = await aylin.voice.draft(brief, lang="tr-TR")
         ev = await aylin.voice.speak_in_browser(text=speech_tr, lang="tr-TR")
         yield AgentEvent(kind="voice.speak", persona="aylin", payload={
             **ev,
-            "translation_en": "Aylin, you have an OB check Tuesday at 14:00, added to your calendar. No heavy lifting this week — I reminded your partner to handle groceries.",
+            "text": speech_tr,
         })
         await self.beat()
 
