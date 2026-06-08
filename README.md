@@ -27,9 +27,9 @@ The shared **Family Health Graph** lets the network spot cross-generational and 
                              │ A2A
           ┌──────────────────┴──────────────────┐
           │ INNER RING — FAMILY                 │
-          │  Aylin (32, pregnant) ⇄ Ahmet (60)  │
+          │  Emma (32, pregnant) ⇄ Robert (60)  │
           │              ⇅                       │
-          │     Selin (28, caregiver)            │
+          │     Sarah (28, caregiver)            │
           └─────────────────────────────────────┘
                              │
                     ┌────────┴────────┐
@@ -61,9 +61,9 @@ Gemini 2.5 Pro · Gemini 2.5 Flash · Gemini Live · Cloud Text-to-Speech · ADK
 **Architecture diagram:** <https://vitacare-web-205100594497.europe-west1.run.app/diagram> (or [docs/architecture-diagram.png](docs/architecture-diagram.png))
 
 3 scenarios:
-1. **The Cascade** — Father's BP trend triggers a family-wide response; agent "calls" father via an in-browser Gemini Live phone-call modal (real Turkish voice, live waveform, no telephony provider)
-2. **The Pregnancy** — Pre-eclampsia signal triggers husband-side coordination
-3. **The Coordination** — Caregiver's morning, where both parents' agents have prepped her day
+1. **The Cascade** — Robert's BP trend triggers Sarah's calendar; the agent "calls" Robert via an in-browser phone-call modal driven by real Google Cloud Text-to-Speech (no telephony provider)
+2. **The Pregnancy** — Emma's early GDM signal triggers cross-family coordination
+3. **The Coordination** — Sarah's caregiver morning — two inbound A2A messages collapse into one 7pm block
 
 ## Run the demo locally (2 min)
 

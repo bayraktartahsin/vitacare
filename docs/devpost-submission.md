@@ -42,7 +42,7 @@ Every family member runs a personal swarm of six health agents — Sentinel, Chr
 
 The shared **Family Health Graph** (Vertex AI Vector Search + Firestore) lets the network spot cross-generational and cross-time patterns no single clinician would catch — e.g. *"Mom's HRV-drop + missed evening meds + 9pm bathroom trips matches her pre-ER pattern from Nov 2024. 78% confidence. Recommend GP visit within 72 hrs."*
 
-The flagship demo: **The Cascade.** Ahmet's BP is elevated on his 3rd morning. His Sentinel triggers; his Clinician (Gemini 2.5 Pro, grounded against ESC/ESH 2018) confirms moderate concern. His Diplomat sends an A2A message to his daughter Selin's Diplomat. Her Concierge auto-books a GP slot at Acıbadem Maslak and adds the event to her Google Calendar. His Voice agent then "calls" him — opening an iPhone-style modal in the browser bound to a real Google Cloud Text-to-Speech Turkish voice stream. The caption shows his line in Turkish: *"Babacığım, Selin senin için Salı sabah 10:00'da bir doktor randevusu ayarladı..."*
+The flagship demo: **The Cascade.** Robert's BP is elevated on his 3rd morning. His Sentinel triggers; his Clinician (Gemini 2.5 Pro, grounded against ESC/ESH 2018) confirms moderate concern. His Diplomat sends an A2A message to his daughter Sarah's Diplomat. Her Concierge auto-books a GP slot with Dr. Emily Carter at Northwell Health and adds the event to her Google Calendar. His Voice agent then "calls" him — opening an iPhone-style modal in the browser bound to a real Google Cloud Text-to-Speech audio stream. The caption shows his line: *"Dad, Sarah booked you a GP appointment for Tuesday at 10 AM, just to have your blood pressure checked..."*
 
 All four Vita cohorts (Pregnancy / Baby / Adult / Senior) are exercised in three demo scenarios. The entire stack is Google — no third-party AI providers, no telephony provider, nothing external to the Google Cloud ecosystem.
 
@@ -66,7 +66,7 @@ Gemini 2.5 Pro · Gemini 2.5 Flash · Gemini Live · Google Cloud Text-to-Speech
 2. **Consent must be modeled before data.** We built the ConsentGrid before the message router so we couldn't accidentally ship a "share-everything" prototype. This bled into the schema for every other component.
 3. **Gemini Pro under hackathon traffic peaks gets 503'd.** We added a Pro → Flash fallback that runs on the 2nd retry. The clinical assessment still passes its ESC/ESH citation check on Flash, which surprised us.
 4. **The "phone call" is the wow.** Replacing a planned Twilio integration with an in-browser Gemini-styled phone modal (backed by Cloud TTS) made the demo *more* impressive: real Google audio + reasoning chain visible alongside, in one screen.
-5. **EMEA-resonant UX needs Turkish-native voice.** Cloud TTS `tr-TR-Wavenet-E` sells the demo emotionally in a way English narration of a Turkish family never would.
+5. **The simulated phone-call UI replaced our planned third-party telephony.** A Cloud-TTS-driven iPhone-style modal proved more compelling than an actual outbound call would have — judges see the agent reasoning chain *and* hear the agent voice, in one screen, on pure Google infrastructure.
 
 ### Third-party integrations
 
