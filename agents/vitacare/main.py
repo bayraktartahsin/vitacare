@@ -21,6 +21,7 @@ from pydantic import BaseModel
 from sse_starlette.sse import EventSourceResponse
 
 from .a2a.messages import A2AMessage
+from .adk_registry import ADK_SWARMS, describe_swarm
 from .config import settings
 from .fhg import ensure_seeded
 from .personas import PERSONAS, get_persona
@@ -62,6 +63,20 @@ async def healthz():
 @app.get("/personas")
 async def list_personas():
     return {"personas": [{"id": p.id, "name": p.name, "role": p.role} for p in PERSONAS]}
+
+
+@app.get("/adk/swarm/{persona_id}")
+async def get_swarm(persona_id: str):
+    """Inspect a persona's ADK Agent swarm topology (name, model, sub-agents)."""
+    if persona_id not in ADK_SWARMS:
+        raise HTTPException(404, "unknown persona")
+    return describe_swarm(persona_id)
+
+
+@app.get("/adk/swarms")
+async def list_swarms():
+    """All three personas' ADK swarms — proves the ADK Agent registry is live."""
+    return {pid: describe_swarm(pid) for pid in ADK_SWARMS.keys()}
 
 
 @app.get("/persona/{persona_id}")

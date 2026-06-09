@@ -84,8 +84,10 @@ export default function Home() {
               VitaCare
             </span>
           </h1>
+          <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
+            <span>★</span> the world's first agent-to-agent care network
+          </p>
           <p className="mt-5 max-w-2xl text-xl leading-snug text-ink2 md:text-2xl">
-            The world's first agent-to-agent care network.{" "}
             <span className="text-ink">One AI per person.</span>{" "}
             <span className="text-ink">A network for the people you love.</span>
           </p>
@@ -148,8 +150,44 @@ export default function Home() {
           </section>
         )}
 
+        {/* TEAM / CREDIBILITY */}
+        <section className="mt-20 rounded-2xl border border-line bg-panel/40 p-6 backdrop-blur md:p-8">
+          <div className="flex items-baseline gap-3">
+            <span className="font-mono text-xs font-semibold text-accent">03</span>
+            <span className="text-[11px] font-medium uppercase tracking-[0.25em] text-ink2">Who's behind this</span>
+          </div>
+          <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div>
+              <div className="text-lg font-semibold tracking-tight">Graviti Labs</div>
+              <div className="mt-1 text-sm text-ink2">
+                Health AI studio. Builds Vita, Vita Praxis, and now VitaCare. Based in EMEA, shipping to 23 locales.
+              </div>
+              <a href="https://gravitilabs.com" target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-accent hover:underline">
+                gravitilabs.com →
+              </a>
+            </div>
+            <div>
+              <div className="text-lg font-semibold tracking-tight">Vita</div>
+              <div className="mt-1 text-sm text-ink2">
+                The consumer-facing parent app — voice + text health companion, shipping on iOS in 23 locales. Covers the 4 cohorts (Pregnancy / Baby / Adult / Senior) VitaCare's swarm inherits.
+              </div>
+              <div className="mt-2 text-[11px] text-ink2/70 font-mono">bundle id com.tahsinbayraktar.tai</div>
+            </div>
+            <div>
+              <div className="text-lg font-semibold tracking-tight">Vita Praxis</div>
+              <div className="mt-1 text-sm text-ink2">
+                The doctor-facing sibling — the clinic-side endpoint that receives VitaCare's A2A handoffs. B2B SaaS path to provider-side monetisation.
+              </div>
+              <div className="mt-2 text-[11px] text-ink2/70 font-mono">desktop · Tauri · in design prototype</div>
+            </div>
+          </div>
+          <div className="mt-6 border-t border-line pt-4 text-[11px] text-ink2">
+            VitaCare is a net-new submission for Google for Startups AI Agents Challenge 2026. Source-available on GitHub for judging. © 2026 Graviti Labs.
+          </div>
+        </section>
+
         {/* FOOTER */}
-        <footer className="mt-20 border-t border-line pt-8 text-xs text-ink2">
+        <footer className="mt-12 border-t border-line pt-8 text-xs text-ink2">
           <div className="flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
             <div>
               Built by{" "}
