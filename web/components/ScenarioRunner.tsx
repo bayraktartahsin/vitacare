@@ -25,6 +25,7 @@ const KIND_COLORS: Record<string, string> = {
   "voice.draft": "text-accent",
   "voice.call_placed": "text-accent",
   "voice.speak": "text-accent",
+  "fhg.recall": "text-warn",
   "scenario.start": "text-ink2",
   "scenario.end": "text-ink2",
 };

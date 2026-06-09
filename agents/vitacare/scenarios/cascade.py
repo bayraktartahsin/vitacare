@@ -12,6 +12,7 @@ from __future__ import annotations
 from collections.abc import AsyncIterator
 
 from ..a2a import A2AMessage
+from ..fhg import get_graph
 from ..personas import get_persona
 from ..subagents.base import AgentEvent
 from .base import Scenario
@@ -41,7 +42,18 @@ class CascadeScenario(Scenario):
             yield ev
             await self.beat()
 
-        assessment = await robert.clinician.assess(trigger or {}, history=[])
+        # FHG semantic recall — pull cross-generational + longitudinal context
+        # for the Clinician. Uses real Gemini embeddings (3072-d, cosine sim).
+        fhg = get_graph()
+        recalled = fhg.family_pattern("elevated blood pressure cardiovascular risk premature MI hypertension")
+        yield AgentEvent(kind="fhg.recall", persona="robert", payload={
+            "query": "elevated BP + family CV history",
+            "hits": recalled,
+            "store": "Gemini embedding-001 · 3072-d · cosine similarity",
+        })
+        await self.beat(0.3)
+
+        assessment = await robert.clinician.assess(trigger or {}, history=recalled)
         yield AgentEvent(kind="clinician.assessment", persona="robert", payload=assessment)
         await self.beat()
 

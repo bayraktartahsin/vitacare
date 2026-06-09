@@ -9,6 +9,7 @@ from __future__ import annotations
 from collections.abc import AsyncIterator
 
 from ..a2a import A2AMessage
+from ..fhg import get_graph
 from ..personas import get_persona
 from ..subagents.base import AgentEvent
 from .base import Scenario
@@ -34,7 +35,16 @@ class PregnancyScenario(Scenario):
             yield ev
             await self.beat()
 
-        assessment = await emma.clinician.assess(trigger or {}, history=[])
+        fhg = get_graph()
+        recalled = fhg.family_pattern("gestational diabetes glucose pregnancy GDM family history")
+        yield AgentEvent(kind="fhg.recall", persona="emma", payload={
+            "query": "GDM family history + recent glucose pattern",
+            "hits": recalled,
+            "store": "Gemini embedding-001 · 3072-d · cosine similarity",
+        })
+        await self.beat(0.3)
+
+        assessment = await emma.clinician.assess(trigger or {}, history=recalled)
         yield AgentEvent(kind="clinician.assessment", persona="emma", payload=assessment)
         await self.beat()
 
