@@ -1,0 +1,172 @@
+<!doctype html>
+<html><head><meta charset="utf-8"/><style>
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 500px; height: 300px;
+    background: #0b0d12;
+    background-image:
+      radial-gradient(circle at 18% -10%, rgba(122,162,247,0.32), transparent 55%),
+      radial-gradient(circle at 110% 110%, rgba(187,154,247,0.30), transparent 55%);
+    color: #e7e9ee;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+  body::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .wrap {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px 24px 16px;
+    box-sizing: border-box;
+  }
+  .top {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex: 1;
+  }
+  .left { flex: 1; min-width: 0; }
+  .right {
+    width: 140px;
+    flex-shrink: 0;
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(122,162,247,0.13);
+    border: 1px solid rgba(122,162,247,0.45);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #7aa2f7;
+    width: max-content;
+  }
+  .pill::before { content: "★"; font-size: 9px; }
+  .brand {
+    font-size: 60px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin: 12px 0 8px 0;
+    background: linear-gradient(90deg, #e7e9ee 0%, #7aa2f7 55%, #bb9af7 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .tag {
+    color: #c4c8d0;
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.3;
+    max-width: 280px;
+  }
+  .tag b { color: #ffffff; font-weight: 600; }
+
+  /* Right side — vertical stack of 3 person nodes with A2A links */
+  .net-svg {
+    width: 140px;
+    height: 230px;
+    display: block;
+  }
+  .halo {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 140px; height: 140px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(122,162,247,0.20), transparent 65%);
+    filter: blur(20px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .bottom {
+    display: flex;
+    gap: 11px;
+    font-size: 9px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: #9aa1ad;
+    letter-spacing: 0.04em;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 10px;
+    margin-top: 8px;
+    align-items: center;
+  }
+  .bottom .dot { color: #455168; }
+  .bottom b { color: #9ece6a; font-weight: 700; }
+</style></head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="left">
+        <span class="pill">the world's first agent-to-agent care network</span>
+        <div class="brand">VitaCare</div>
+        <div class="tag">One AI per person. <b>A network for the people you love.</b></div>
+      </div>
+
+      <div class="right">
+        <div class="halo"></div>
+        <svg class="net-svg" viewBox="0 0 140 230" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+
+          <!-- Vertical A2A edges (dashed pink) -->
+          <line x1="70" y1="35"  x2="70" y2="115" stroke="#f7768e" stroke-opacity="0.55" stroke-width="1.4" stroke-dasharray="4 4"/>
+          <line x1="70" y1="115" x2="70" y2="195" stroke="#f7768e" stroke-opacity="0.55" stroke-width="1.4" stroke-dasharray="4 4"/>
+
+          <!-- A2A labels on the edges -->
+          <text x="78" y="78"  font-size="7.5" fill="#f7768e" font-family="ui-monospace,Menlo,monospace" letter-spacing="0.5">A2A</text>
+          <text x="78" y="158" font-size="7.5" fill="#f7768e" font-family="ui-monospace,Menlo,monospace" letter-spacing="0.5">A2A</text>
+
+          <!-- Person 1 — Emma (pink) -->
+          <g filter="url(#glow)">
+            <circle cx="70" cy="35" r="20" fill="#161a23" stroke="#f7768e" stroke-width="2.4"/>
+            <text x="70" y="42" text-anchor="middle" font-size="14" font-weight="700" fill="#f7768e" font-family="-apple-system,system-ui,sans-serif">E</text>
+          </g>
+
+          <!-- Person 2 — Robert (blue) -->
+          <g filter="url(#glow)">
+            <circle cx="70" cy="115" r="20" fill="#161a23" stroke="#7aa2f7" stroke-width="2.4"/>
+            <text x="70" y="122" text-anchor="middle" font-size="14" font-weight="700" fill="#7aa2f7" font-family="-apple-system,system-ui,sans-serif">R</text>
+          </g>
+
+          <!-- Person 3 — Sarah (green) -->
+          <g filter="url(#glow)">
+            <circle cx="70" cy="195" r="20" fill="#161a23" stroke="#9ece6a" stroke-width="2.4"/>
+            <text x="70" y="202" text-anchor="middle" font-size="14" font-weight="700" fill="#9ece6a" font-family="-apple-system,system-ui,sans-serif">S</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <span>Gemini</span><span class="dot">·</span>
+      <span>ADK</span><span class="dot">·</span>
+      <span>A2A</span><span class="dot">·</span>
+      <span>MCP</span><span class="dot">·</span>
+      <span>Vertex</span><span class="dot">·</span>
+      <span>Cloud Run</span><span class="dot">·</span>
+      <b>100% Google</b>
+    </div>
+  </div>
+</body></html>
