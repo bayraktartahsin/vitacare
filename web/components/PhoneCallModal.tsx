@@ -26,6 +26,41 @@ function initials(name: string) {
   return name.split(/\s+/).map(p => p[0]).slice(0, 2).join("").toUpperCase();
 }
 
+/** Render a phone-number string. Any `█` characters are styled as
+ *  rounded grey privacy blocks instead of raw Unicode glyphs (which
+ *  some system fonts render as missing-glyph boxes).
+ *  Example input: "+1 (415) ███-████"
+ */
+function MaskedPhone({ value }: { value: string }) {
+  const parts: React.ReactNode[] = [];
+  let buf = "";
+  let blockRun = 0;
+  const flushBuf = () => { if (buf) { parts.push(buf); buf = ""; } };
+  const flushBlocks = () => {
+    while (blockRun > 0) {
+      parts.push(
+        <span
+          key={`b-${parts.length}-${blockRun}`}
+          className="mx-[1px] inline-block h-[10px] w-[8px] translate-y-[1px] rounded-[2px] bg-white/35"
+        />
+      );
+      blockRun--;
+    }
+  };
+  for (const ch of value) {
+    if (ch === "█") {
+      flushBuf();
+      blockRun++;
+    } else {
+      flushBlocks();
+      buf += ch;
+    }
+  }
+  flushBlocks();
+  flushBuf();
+  return <span className="inline-flex items-center font-mono text-[12px] text-white/60">{parts}</span>;
+}
+
 export function PhoneCallModal({ open, recipient, recipientSub, text, lang, onClose }: Props) {
   const [state, setState] = useState<"ringing" | "connected" | "ended">("ringing");
   const [seconds, setSeconds] = useState(0);
@@ -157,35 +192,43 @@ export function PhoneCallModal({ open, recipient, recipientSub, text, lang, onCl
             </span>
           </div>
 
-          <div className="flex h-full flex-col items-center justify-between px-9 pb-10 pt-24 text-white">
+          <div className="flex h-full flex-col items-center px-7 pb-7 pt-20 text-white">
+            {/* Top — recipient */}
             <div className="flex flex-col items-center">
               <div className="text-[10px] font-medium uppercase tracking-[0.35em] text-white/60">
                 {state === "ringing" ? "ringing…" : state === "connected" ? "connected" : "call ended"}
               </div>
-              <div className="relative mt-5">
+              <div className="relative mt-4">
                 <div className="absolute inset-0 -m-2 rounded-full bg-gradient-to-br from-blue-400/30 to-purple-500/30 blur-xl" />
-                <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 text-4xl font-semibold shadow-lg">
+                <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 text-3xl font-semibold shadow-lg">
                   {initials(recipient)}
                 </div>
               </div>
-              <div className="mt-5 text-3xl font-semibold tracking-tight">{recipient}</div>
-              {recipientSub && <div className="mt-1 font-mono text-[12px] text-white/55">{recipientSub}</div>}
-              <div className="mt-3 font-mono text-base text-white/80">
+              <div className="mt-4 text-2xl font-semibold tracking-tight">{recipient}</div>
+              {recipientSub && <div className="mt-1"><MaskedPhone value={recipientSub} /></div>}
+              <div className="mt-2 font-mono text-base text-white/80">
                 {state === "ringing" ? <Dots /> : fmt(seconds)}
               </div>
             </div>
 
-            <div className="w-full">
+            {/* Middle — waveform + caption */}
+            <div className="mt-5 w-full flex-1 min-h-0">
               {state === "connected" && (
                 <>
                   <RealtimeWaveform levels={levels} />
-                  <div className="mt-5 max-h-44 overflow-y-auto rounded-2xl bg-white/[0.06] p-3.5 text-center text-[13px] leading-relaxed text-white shadow-inner">
+                  <div className="mt-4 max-h-32 overflow-y-auto rounded-2xl bg-white/[0.06] p-3 text-center text-[12.5px] leading-relaxed text-white shadow-inner">
                     {text}
                   </div>
                 </>
               )}
             </div>
 
+            {/* Stack-attribution badge sits above the buttons in normal flow */}
+            <div className="my-3 rounded-full bg-white/[0.06] px-3 py-1 text-[9.5px] font-medium uppercase tracking-[0.25em] text-white/55">
+              Cloud TTS · Chirp 3 HD · No telephony
+            </div>
+
+            {/* Bottom — call controls */}
             <div className="flex w-full items-center justify-around">
               <CallBtn
                 icon={muted ? "🔇" : "🎙"}
@@ -196,17 +239,13 @@ export function PhoneCallModal({ open, recipient, recipientSub, text, lang, onCl
               />
               <button
                 onClick={endCall}
-                className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-red-400 to-red-600 text-white shadow-lg shadow-red-500/30 transition active:scale-95"
+                className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-red-400 to-red-600 text-white shadow-lg shadow-red-500/30 transition active:scale-95"
                 aria-label="end call"
               >
                 <span className="rotate-[135deg] text-2xl leading-none">📞</span>
               </button>
               <CallBtn icon="🔊" label="speaker" disabled />
             </div>
-          </div>
-
-          <div className="absolute bottom-2 left-1/2 z-20 -translate-x-1/2 rounded-full bg-white/[0.06] px-3 py-1 text-[9.5px] font-medium uppercase tracking-[0.25em] text-white/55">
-            Google Cloud TTS · Chirp 3 HD · No telephony
           </div>
 
           {audioUrl && <audio ref={audioRef} src={audioUrl} hidden />}
