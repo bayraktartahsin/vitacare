@@ -206,33 +206,61 @@ export default function Home() {
             <span className="font-mono text-xs font-semibold text-accent">04</span>
             <span className="text-[11px] font-medium uppercase tracking-[0.25em] text-ink2">Who's behind this</span>
           </div>
+
           <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-3">
-            <div>
-              <div className="text-lg font-semibold tracking-tight">Graviti Labs</div>
-              <div className="mt-1 text-sm text-ink2">
-                Health AI studio. Builds Vita, Vita Praxis, and now VitaCare. Based in EMEA, shipping to 23 locales.
+            {/* Graviti Labs */}
+            <div className="relative">
+              <div className="flex items-center gap-2">
+                <div className="text-lg font-semibold tracking-tight">Graviti Labs</div>
+                <span className="rounded-full bg-ink2/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-widest text-ink2">studio</span>
               </div>
-              <a href="https://gravitilabs.com" target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-accent hover:underline">
-                gravitilabs.com →
-              </a>
+              <div className="mt-1.5 text-sm leading-relaxed text-ink2">
+                Independent software studio. Builds and ships consumer + B2B health products end-to-end — iOS, web, desktop, infra. The team behind Vita, Vita Praxis, and VitaCare.
+              </div>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {["iOS · Swift", "Web · Next.js", "Desktop · Tauri", "Backend · Node + Python", "Cloud Run"].map(t => (
+                  <span key={t} className="rounded-md bg-white/[0.04] px-1.5 py-0.5 text-[10px] text-ink2">{t}</span>
+                ))}
+              </div>
             </div>
-            <div>
-              <div className="text-lg font-semibold tracking-tight">Vita</div>
-              <div className="mt-1 text-sm text-ink2">
-                The consumer-facing parent app — voice + text health companion, shipping on iOS in 23 locales. Covers the 4 cohorts (Pregnancy / Baby / Adult / Senior) VitaCare's swarm inherits.
+
+            {/* Vita */}
+            <div className="relative">
+              <div className="flex items-center gap-2">
+                <div className="text-lg font-semibold tracking-tight">Vita</div>
+                <span className="rounded-full bg-ok/15 px-2 py-0.5 text-[10px] font-medium uppercase tracking-widest text-ok">live · shipping</span>
               </div>
-              <div className="mt-2 text-[11px] text-ink2/70 font-mono">bundle id com.tahsinbayraktar.tai</div>
+              <div className="mt-1.5 text-sm leading-relaxed text-ink2">
+                Voice + text health companion. <strong className="text-ink">Live on the iOS App Store in 23 locales.</strong> Covers the four cohorts (Pregnancy / Baby / Adult / Senior) and the safety pipeline (never diagnose, never prescribe) that VitaCare's Clinician inherits directly.
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px]">
+                <a href="https://vitamedas.com" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+                  vitamedas.com ↗
+                </a>
+                <span className="text-ink2/50">·</span>
+                <span className="text-ink2 font-mono">iOS · 23 locales</span>
+              </div>
             </div>
-            <div>
-              <div className="text-lg font-semibold tracking-tight">Vita Praxis</div>
-              <div className="mt-1 text-sm text-ink2">
-                The doctor-facing sibling — the clinic-side endpoint that receives VitaCare's A2A handoffs. B2B SaaS path to provider-side monetisation.
+
+            {/* Vita Praxis */}
+            <div className="relative">
+              <div className="flex items-center gap-2">
+                <div className="text-lg font-semibold tracking-tight">Vita Praxis</div>
+                <span className="rounded-full bg-warn/15 px-2 py-0.5 text-[10px] font-medium uppercase tracking-widest text-warn">prototype</span>
               </div>
-              <div className="mt-2 text-[11px] text-ink2/70 font-mono">desktop · Tauri · in design prototype</div>
+              <div className="mt-1.5 text-sm leading-relaxed text-ink2">
+                Doctor-facing desktop sibling — currently in active prototype. Designed as the clinic-side endpoint that will receive VitaCare's A2A handoffs on the same protocol — no separate integration to build.
+              </div>
+              <div className="mt-3 flex items-center gap-2 text-[11px]">
+                <a href="/praxis" className="text-accent hover:underline">/praxis mock ↗</a>
+                <span className="text-ink2/50">·</span>
+                <span className="text-ink2 font-mono">desktop · Tauri</span>
+              </div>
             </div>
           </div>
-          <div className="mt-6 border-t border-line pt-4 text-[11px] text-ink2">
-            VitaCare is a net-new submission for Google for Startups AI Agents Challenge 2026. Source-available on GitHub for judging. © 2026 Graviti Labs.
+
+          <div className="mt-6 border-t border-line pt-4 text-[11px] leading-relaxed text-ink2">
+            VitaCare is a net-new submission for the Google for Startups AI Agents Challenge 2026 — the agentic coordination layer on top of Graviti Labs' existing health-AI product family. Source-available on GitHub for judging. © 2026 Graviti Labs.
           </div>
         </section>
 
@@ -240,16 +268,18 @@ export default function Home() {
         <footer className="mt-12 border-t border-line pt-8 text-xs text-ink2">
           <div className="flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              Built by{" "}
-              <a className="text-accent hover:underline" href="https://gravitilabs.com" target="_blank" rel="noopener noreferrer">
-                Graviti Labs
-              </a>{" "}
-              · 2026 ·{" "}
+              Built by Graviti Labs · 2026 ·{" "}
               <a className="text-accent hover:underline" href="https://github.com/bayraktartahsin/vitacare" target="_blank" rel="noopener noreferrer">
                 github
               </a>{" "}
               ·{" "}
-              <a className="text-accent hover:underline" href="/diagram">architecture</a>
+              <a className="text-accent hover:underline" href="/diagram">architecture</a>{" "}
+              ·{" "}
+              <a className="text-accent hover:underline" href="/pitch">pitch</a>{" "}
+              ·{" "}
+              <a className="text-accent hover:underline" href="/praxis">praxis</a>{" "}
+              ·{" "}
+              <a className="text-accent hover:underline" href="https://vitamedas.com" target="_blank" rel="noopener noreferrer">vita</a>
             </div>
             <div className="font-mono text-[10px]">
               Gemini 2.5 Pro · 2.5 Flash · Live · Embedding-001 · Cloud TTS · ADK · A2A · MCP · Vertex AI · Cloud Run

@@ -20,7 +20,10 @@ Target: a 3-minute polished video that lands the wow moment. Total time on your 
 Open Chrome and do these IN ORDER before you click record:
 
 1. Go to **https://vitacare-web-205100594497.europe-west1.run.app** in a new tab. Wait for the page to fully load. **Click anywhere on the body once** (this primes browser autoplay so the modal's audio works on the first try).
-2. Open https://vitacare-web-205100594497.europe-west1.run.app/diagram in a second tab.
+2. Open these in additional tabs so they're a single-keystroke click away during recording:
+   - https://vitacare-web-205100594497.europe-west1.run.app/diagram (architecture)
+   - https://vitacare-web-205100594497.europe-west1.run.app/pitch (5-slide deck)
+   - https://vitacare-web-205100594497.europe-west1.run.app/praxis (doctor-side mock)
 3. Resize your Chrome window to roughly fill the screen — leave the bookmarks bar visible but no other distracting UI.
 4. **Make sure your sound is ON** and at a comfortable volume. You'll be recording system audio.
 5. Open the Loom desktop app, set:
@@ -69,10 +72,12 @@ Read the script below ALOUD while clicking. Don't worry about perfection — you
 
 #### 0:35 — Architecture flash (15 seconds)
 
-**Show:** switch to your second tab — `/diagram`. Let the diagram sit on screen.
+**Show:** switch to your `/diagram` tab. Let the diagram sit on screen.
 
 **Say:**
 > "Three concentric rings of A2A. The inner ring is the family. The middle ring is clinical — pharmacy, lab, insurer, and the doctor's own agent. The outer ring is the world's clinical knowledge, surfaced live via Google Search Grounding. The Family Health Graph at the centre uses real three-thousand-and-seventy-two-dimensional Gemini embeddings."
+
+**Optional 5-second click into `/pitch`:** switch to the `/pitch` tab, scroll past slide 01 (Problem) and 02 (Solution) — let each sit for ~2 sec. Don't read the slides, just let the eye take in the structure. Then switch back to the home tab.
 
 ---
 
@@ -140,12 +145,17 @@ The audio is ~10 seconds long. Make sure your viewers can hear it.
 
 ---
 
-#### 2:35 — Business case (15 seconds)
+#### 2:35 — Who's behind this + business case (25 seconds)
 
-**Show:** scroll back to the top and let the trust strip sit on screen, then scroll down to the "Who's behind this" section.
+**Show:** scroll down to the **"04 · Who's behind this"** section. Pause on the three cards for ~2 seconds so the chips are readable (`STUDIO · LIVE SHIPPING · PROTOTYPE`).
 
-**Say:**
-> "VitaCare is built by Graviti Labs — makers of Vita, our shipping iOS health companion in twenty-three locales — and Vita Praxis, the doctor-side B2B sibling that receives these A2A handoffs. Family Tier subscription: twenty-five dollars a month per household. Forty million unpaid caregivers in the US alone. Twelve billion dollar addressable market."
+**Say (slow, calibrated — don't oversell):**
+> "VitaCare is built by Graviti Labs — an independent software studio that ships consumer and B2B health products end-to-end. Our consumer-facing product Vita is already live on the iOS App Store in twenty-three locales — and VitaCare's safety pipeline is inherited directly from it. Vita Praxis, our doctor-facing sibling, is currently in active prototype — designed as the clinic-side endpoint that will receive these same A2A handoffs."
+
+**Optional 5-second click into `/praxis` here:** hover over the *"B2B side (Vita Praxis)"* CTA in the hero, click it, let the doctor-side mock land for 3 seconds, then go back.
+
+**Say (continue with the market line):**
+> "Family Tier subscription: twenty-five dollars a month per household. Forty million unpaid caregivers in the US alone — a twelve-billion-dollar addressable market — and Vita's existing twenty-three-locale distribution is the day-zero on-ramp."
 
 ---
 
