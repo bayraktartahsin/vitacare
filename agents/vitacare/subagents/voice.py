@@ -33,17 +33,22 @@ class VoiceAgent(BaseSubAgent):
 
     def __init__(self, persona_id: str):
         super().__init__(persona_id)
-        self.model = settings.gemini_model_flash
+        # Pro for the spoken line — gets the family-conversation tone right.
+        # Flash kicks in as fallback if Pro is overloaded.
+        self.model = settings.gemini_model_pro
+        self.fallback_model = settings.gemini_model_flash
         self.live_model = settings.gemini_model_live
 
     async def draft(self, brief: str, lang: str = "en-US") -> str:
-        """Use Gemini Flash to draft the natural-language line to be spoken."""
-        return await generate(
+        """Use Gemini Pro to draft the natural-language line (Flash falls back)."""
+        text, _ = await generate(
             model=self.model,
+            fallback_model=self.fallback_model,
             system=_system_for(lang),
             prompt=brief,
-            temperature=0.6,
+            temperature=0.7,
         )
+        return text
 
     async def speak_in_browser(self, text: str, lang: str = "en-US") -> dict[str, Any]:
         """Return a payload the demo plays via Gemini Live in the browser."""

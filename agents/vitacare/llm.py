@@ -48,10 +48,15 @@ async def generate(
     temperature: float = 0.4,
     fallback_model: str | None = None,
     max_retries: int = 2,
-) -> str:
-    """One-shot text generation. Returns the model's text (JSON string if schema given).
+    grounded: bool = False,
+) -> tuple[str, list[dict[str, str]]]:
+    """One-shot text generation. Returns ``(text, citations)``.
 
-    On 429/500/503, retries once then falls back to ``fallback_model`` (typically Flash).
+    - ``json_schema`` enables structured output (mutually exclusive with ``grounded``;
+      Gemini rejects tool use combined with response_mime_type=application/json).
+    - ``grounded=True`` adds Google Search Grounding so the model cites real sources.
+    - ``citations`` is ``[{"title": ..., "uri": ...}, ...]`` (empty when ungrounded).
+    - On 429/500/503, retries with backoff then falls back to ``fallback_model``.
     """
     cfg_kwargs: dict[str, Any] = {"temperature": temperature}
     if system:
@@ -59,6 +64,10 @@ async def generate(
     if json_schema:
         cfg_kwargs["response_mime_type"] = "application/json"
         cfg_kwargs["response_schema"] = json_schema
+    if grounded:
+        if json_schema:
+            raise ValueError("grounded=True cannot be combined with json_schema (Gemini API limitation)")
+        cfg_kwargs["tools"] = [types.Tool(google_search=types.GoogleSearch())]
     config = types.GenerateContentConfig(**cfg_kwargs)
 
     candidates = [model] + ([fallback_model] if fallback_model and fallback_model != model else [])
@@ -68,7 +77,16 @@ async def generate(
         for attempt in range(max_retries + 1):
             try:
                 resp = client().models.generate_content(model=m, contents=prompt, config=config)
-                return (resp.text or "").strip()
+                text = (resp.text or "").strip()
+                citations: list[dict[str, str]] = []
+                if grounded and resp.candidates:
+                    gm = resp.candidates[0].grounding_metadata
+                    if gm and gm.grounding_chunks:
+                        for c in gm.grounding_chunks:
+                            web = getattr(c, "web", None)
+                            if web and getattr(web, "uri", None):
+                                citations.append({"title": web.title or "", "uri": web.uri})
+                return text, citations
             except Exception as e:  # noqa: BLE001
                 last_err = e
                 if _is_overloaded(e) and attempt < max_retries:
@@ -78,9 +96,25 @@ async def generate(
                     continue
                 if _is_overloaded(e) and m != candidates[-1]:
                     logger.warning("Gemini %s still overloaded — falling back to next model", m)
-                    break  # move on to next candidate model
+                    break
                 raise
     raise last_err if last_err else RuntimeError("Gemini generate: no candidates")
+
+
+async def generate_text(
+    *,
+    model: str,
+    prompt: str,
+    system: str | None = None,
+    temperature: float = 0.4,
+    fallback_model: str | None = None,
+    grounded: bool = False,
+) -> tuple[str, list[dict[str, str]]]:
+    """Convenience: text-only generation (no JSON schema). Returns (text, citations)."""
+    return await generate(
+        model=model, prompt=prompt, system=system, temperature=temperature,
+        fallback_model=fallback_model, grounded=grounded,
+    )
 
 
 async def generate_json(
@@ -92,8 +126,8 @@ async def generate_json(
     temperature: float = 0.2,
     fallback_model: str | None = None,
 ) -> dict[str, Any]:
-    """Structured JSON output. Raises if parse fails (caller logs + falls back)."""
-    raw = await generate(
+    """Structured JSON output. Returns parsed dict, or {} if parse fails."""
+    raw, _ = await generate(
         model=model,
         prompt=prompt,
         system=system,

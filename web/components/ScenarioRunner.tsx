@@ -117,17 +117,38 @@ export function ScenarioRunner({ scenarioId, onClose }: { scenarioId: string; on
         </div>
         <ol className="space-y-2 font-mono text-sm">
           {events.map((e, i) => (
-            <li key={i} className="flex gap-3">
-              <span className="w-6 text-right text-ink2">{i + 1}</span>
-              <span className={`w-56 shrink-0 ${KIND_COLORS[e.kind] || "text-ink2"}`}>{e.kind}</span>
-              <span className="truncate text-ink">
-                {e.data?.subject ||
-                  e.data?.title ||
-                  e.data?.detail ||
-                  e.data?.text ||
-                  e.data?.summary ||
-                  JSON.stringify(e.data).slice(0, 120)}
-              </span>
+            <li key={i} className="flex flex-col gap-1">
+              <div className="flex gap-3">
+                <span className="w-6 text-right text-ink2">{i + 1}</span>
+                <span className={`w-56 shrink-0 ${KIND_COLORS[e.kind] || "text-ink2"}`}>{e.kind}</span>
+                <span className="truncate text-ink">
+                  {e.data?.subject ||
+                    e.data?.title ||
+                    e.data?.detail ||
+                    e.data?.text ||
+                    e.data?.recommendation ||
+                    e.data?.summary ||
+                    JSON.stringify(e.data).slice(0, 120)}
+                </span>
+              </div>
+              {/* Grounded citations from Gemini's Google Search call */}
+              {e.kind === "clinician.assessment" && Array.isArray(e.data?.citations) && e.data.citations.length > 0 && (
+                <div className="ml-[15.5rem] flex flex-wrap gap-1.5 pl-3">
+                  {e.data.citations.map((c: { title: string; uri: string }, j: number) => (
+                    <a
+                      key={j}
+                      href={c.uri}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={c.title}
+                      className="rounded-full border border-accent/40 bg-accent/10 px-2 py-0.5 text-[10px] text-accent hover:bg-accent/20"
+                    >
+                      ↗ {c.title || new URL(c.uri).hostname.replace("vertexaisearch.cloud.google.com", "google grounding")}
+                    </a>
+                  ))}
+                  <span className="text-[10px] text-ink2 italic">grounded via Google Search</span>
+                </div>
+              )}
             </li>
           ))}
           {done && <li className="text-xs text-ink2">— stream complete —</li>}

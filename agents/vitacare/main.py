@@ -94,8 +94,9 @@ class TTSRequest(BaseModel):
 
 
 _TTS_VOICES = {
-    "en-US": "en-US-Neural2-F",   # warm female EN voice
-    "en-GB": "en-GB-Neural2-A",
+    # Chirp 3 HD = Google's newest highest-quality voice family. Sounds human, low TTS-artifact.
+    "en-US": "en-US-Chirp3-HD-Aoede",
+    "en-GB": "en-GB-Chirp3-HD-Aoede",
 }
 
 
