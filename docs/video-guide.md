@@ -1,220 +1,226 @@
-# 🎬 VitaCare Demo Video — Copy-Paste Recording Guide
+# 🎬 VitaCare Demo Video — Recording Guide
 
-Target: a 3-minute polished video that lands the wow moment. Total time on your side: **~45 minutes** (setup + record + light edit). No video skills needed.
+Target: a **3-minute cinematic demo** that lands the wow moment. The pattern is **Setup → Watch → Payoff**: you set up the story *before* each click, the visuals play *silently* (Cloud TTS plays itself), and you deliver the payoff *after*. Total time on your side: **~45 minutes**.
 
 ---
 
 ## STEP 0 · What you need (5 min)
 
-- **A browser** (Chrome works best)
-- **A free Loom account** → https://www.loom.com/signup (10 sec signup with Google login)
-- **Loom desktop app** → https://www.loom.com/desktop (one-click install; needed for high-quality mic + system audio)
-- **Headphones** (so the speaker output doesn't leak into your mic)
-- A **quiet room** for ~10 minutes
-- This document open on your phone or a second monitor so you can read the script
+- **Chrome** browser
+- **Loom desktop app** → https://www.loom.com/desktop (free, captures system audio + mic at 1080p)
+- **Headphones** (so the modal's Cloud TTS audio doesn't bleed into your mic)
+- **Quiet room** for ~10 minutes
+- This document open on your phone or a second monitor
 
 ---
 
-## STEP 1 · Pre-flight checklist (2 min)
+## STEP 1 · Pre-flight checklist (3 min)
 
-Open Chrome and do these IN ORDER before you click record:
+Open Chrome and do these IN ORDER:
 
-1. Go to **https://vitacare-web-205100594497.europe-west1.run.app** in a new tab. Wait for the page to fully load. **Click anywhere on the body once** (this primes browser autoplay so the modal's audio works on the first try).
-2. Open these in additional tabs so they're a single-keystroke click away during recording:
-   - https://vitacare-web-205100594497.europe-west1.run.app/diagram (architecture)
-   - https://vitacare-web-205100594497.europe-west1.run.app/pitch (5-slide deck)
-   - https://vitacare-web-205100594497.europe-west1.run.app/praxis (doctor-side mock)
-3. Resize your Chrome window to roughly fill the screen — leave the bookmarks bar visible but no other distracting UI.
-4. **Make sure your sound is ON** and at a comfortable volume. You'll be recording system audio.
-5. Open the Loom desktop app, set:
-   - **Recording type:** Screen + Mic + System Audio (in Loom settings → Audio → "Capture system audio")
-   - **Camera:** OFF (no need for your face)
+1. Go to **https://vitacare-web-205100594497.europe-west1.run.app**. Wait for the page to fully load. **Click anywhere on the body once** — this primes browser autoplay so the Cloud TTS audio works first try.
+2. Open these in additional tabs (single-click switch during recording):
+   - `/diagram` (architecture)
+   - `/pitch` (5-slide deck)
+   - `/praxis` (doctor-side mock)
+3. Resize Chrome to roughly fill the screen. Bookmarks bar visible, no other UI distractions.
+4. **Sound ON** at comfortable volume — you're recording system audio.
+5. Open Loom. Settings:
+   - **Recording type:** Screen + Mic + System Audio (Settings → Audio → "Capture system audio")
+   - **Camera:** OFF
    - **Resolution:** 1080p
 
 ---
 
-## STEP 2 · The recording (8–10 min, including 1–2 retakes)
+## STEP 2 · The recording (10–12 min, including 1–2 retakes)
 
-Read the script below ALOUD while clicking. Don't worry about perfection — you can re-record any segment.
+### 🎙️ How to read the script
 
-> **Tip:** if you fluff a line, just say *"let me try that again"* and keep going. Loom lets you trim takes after.
-
-### 🎙️ NARRATION SCRIPT (read this exact text out loud while you click)
-
----
-
-#### 0:00 — Cold open (10 seconds)
-
-**Show:** the home page — let it sit on screen for 3 seconds before talking.
-
-**Say:**
-> "Healthcare's biggest unsolved problem isn't diagnosis. It's coordination — across the people who actually care for each other. Today the pregnant daughter, the hypertensive father, and the burnt-out caregiver all live in fragmented silos. We connected them."
+- **Read each block in one breath.** Don't pause mid-sentence.
+- **The bracketed cues `[CLICK]` `[WATCH]` `[WAIT]` are stage directions** — don't read them aloud.
+- During `[WATCH]` and `[WAIT]` periods, **say nothing**. The visuals + the Cloud TTS audio carry the moment.
+- If you fluff a line, say *"let me say that again"* and continue. Trim in Loom after.
 
 ---
 
-#### 0:10 — The pitch (15 seconds)
+### 🎬 0:00 — Cold open (15 sec)
 
-**Show:** still the home page. **Scroll slowly** so the hero, the trust strip (`6 / 3,072d / 0 / 100%`), and the three persona cards all come into view.
+**Show:** the home page, fully loaded, scrolled to the top. Hold for 2 seconds before you speak.
 
 **Say:**
-> "VitaCare is the world's first agent-to-agent care network. Every family member runs a personal swarm of six health agents — built on Google's Agent Development Kit. Their Diplomats coordinate across people over Google's A2A protocol. Their Clinicians ground in real Google Search. Their Voice agents call them — in browser, in real audio. One hundred percent Google stack. Zero telephony providers."
+
+> *"Healthcare's biggest unsolved problem isn't diagnosis. It's coordination — across the people who actually care for each other. Today the pregnant daughter, the hypertensive father, and the burnt-out caregiver all live in fragmented silos. VitaCare is the world's first agent-to-agent care network — and it's built on a hundred percent Google stack."*
 
 ---
 
-#### 0:25 — The family (10 seconds)
+### 🎬 0:15 — The architecture (15 sec)
 
-**Show:** stay on the persona-card row. Hover over Emma, then Robert, then Sarah so you draw the eye to each.
+**Show:** switch to `/diagram` tab. Hold on the three-ring diagram.
 
 **Say:**
-> "Three personas. Emma — thirty-two, pregnant, trimester three. Robert — sixty, hypertensive father. Sarah — twenty-eight, the daughter caring for both of them. Six agents per person. Eighteen agents total. One Family Health Graph."
+
+> *"Three concentric rings. The inner ring is the family — every member runs a personal swarm of six agents. The middle ring is clinical — pharmacy, lab, insurer, the doctor's own agent. The outer ring is the world's clinical knowledge, surfaced live via Google Search Grounding. The Family Health Graph at the center uses real three-thousand-and-seventy-two-dimensional Gemini embeddings."*
 
 ---
 
-#### 0:35 — Architecture flash (15 seconds)
+### 🎬 0:30 — Meet the family (12 sec)
 
-**Show:** switch to your `/diagram` tab. Let the diagram sit on screen.
+**Show:** switch back to home. Scroll to the persona row so Emma, Robert, Sarah are centered on screen.
 
 **Say:**
-> "Three concentric rings of A2A. The inner ring is the family. The middle ring is clinical — pharmacy, lab, insurer, and the doctor's own agent. The outer ring is the world's clinical knowledge, surfaced live via Google Search Grounding. The Family Health Graph at the centre uses real three-thousand-and-seventy-two-dimensional Gemini embeddings."
 
-**Optional 5-second click into `/pitch`:** switch to the `/pitch` tab, scroll past slide 01 (Problem) and 02 (Solution) — let each sit for ~2 sec. Don't read the slides, just let the eye take in the structure. Then switch back to the home tab.
+> *"Three people. Emma — thirty-two, pregnant. Robert — sixty, hypertensive. Sarah — twenty-eight, the daughter caring for both of them. Six agents per person. Eighteen total. One graph."*
 
 ---
 
-#### 0:50 — Run The Cascade (60 seconds)
+### 🎬 0:42 — Setup The Cascade — *before* you click (25 sec)
 
-**Show:** switch back to the home tab. Scroll down to the Scenarios row. **Click "The Cascade."**
+**Show:** scroll down to the scenarios row. Hover your cursor over **The Cascade** card. **Do not click yet.**
 
-**Say (immediately):**
-> "Watch what happens when Robert's blood pressure cuff reports elevated readings three mornings in a row."
+**Say (slow, confident, set up the stakes):**
 
-**Now stop talking and let the trace stream for ~4-5 seconds.** The sentinel events will populate, then the Family Health Graph card will land with score bars and the live graph visualization below it.
+> *"Here's the scenario. Robert wakes up in Phoenix. His blood-pressure cuff has reported elevated readings three mornings in a row. His daughter Sarah lives in San Francisco — and until VitaCare, this is what would happen: nothing. Robert would forget. Sarah would never know. Now — watch what sixteen seconds looks like."*
 
-**When the FHG card appears, say:**
-> "His Family Health Graph just recalled the most important context — his father died of a heart attack at fifty-eight, and Robert is currently on amlodipine."
-
-**A few seconds later the Clinician card lands with the AHA/ACC citation.**
-
-**Say:**
-> "His Clinician agent — Gemini 2.5 with Google Search Grounding — flags Stage 2 hypertension and cites the actual current AHA/ACC guideline. The citation pills are clickable to real sources."
-
-**The Diplomat card appears with `Robert → Sarah`.**
-
-**Say:**
-> "His Diplomat sends a consent-gated A2A message — straight to his daughter Sarah's Diplomat."
-
-**The Concierge card lands with the appointment.**
-
-**Say:**
-> "Sarah's Concierge auto-books a GP slot at Northwell Health for Tuesday at ten."
-
-**Voice thinking → Voice draft appear.**
-
-**Say:**
-> "And then —"
-
-**Pause for 1 second. The phone modal will slide up.**
-
-> "— her father gets a call."
+**Pause for half a beat.**
 
 ---
 
-#### 1:50 — The wow moment (25 seconds)
+### 🎬 1:07 — Run The Cascade — *silent watching* (~20 sec)
 
-**Show:** the phone modal is now visible. It rings for ~2 seconds, then says "CONNECTED" and starts playing.
+**Show:** **[CLICK "The Cascade"]**
 
-**Stop talking.** Let the Cloud TTS audio play out fully. The line will be roughly:
+**Say nothing.** Let the trace stream in silence. You'll see:
 
-> *"Hi Dad, Sarah's booked you a doctor appointment for Tuesday at ten — just a quick check on your blood pressure."*
+1. Sentinel triggers populate (BP elevated × 3)
+2. Family Health Graph card lands with score bars + the live graph visualization
+3. Clinician card with the AHA/ACC citation
+4. Diplomat A2A from Robert → Sarah
+5. Concierge appointment booked
+6. **The phone modal slides up.** Wait for "Ringing…" → "Connected." Cloud TTS audio plays for ~10 seconds.
 
-The audio is ~10 seconds long. Make sure your viewers can hear it.
-
-**When the audio finishes, say:**
-> "That voice is real Google Cloud Text-to-Speech, Chirp 3 HD. The call is a browser UI. There is no Twilio. There is no telephony provider. Everything you just saw is Google. The reasoning panel on the right shows every agent decision that led to this phone call."
-
-**Click the red end-call button.** Modal closes.
-
----
-
-#### 2:15 — Quick second scenario (20 seconds)
-
-**Show:** scroll back up, **click "The Pregnancy."**
-
-**Say (over the streaming events):**
-> "One more. Emma, trimester three. Her glucose pattern matches an early gestational diabetes signal. Her Clinician grounds against ACOG. Her Chronicler pulls last month's week-26 lab. Her Concierge books her OB. Her Diplomat pings her partner's agent — not to alarm him, just to say: this week, you handle the heavy lifting."
+**Stay silent the entire time.** This is the wow — *don't* talk over it. Let viewers hear the agent voice.
 
 ---
 
-#### 2:35 — Who's behind this + business case (25 seconds)
+### 🎬 1:27 — The payoff — *after* the audio finishes (25 sec)
 
-**Show:** scroll down to the **"04 · Who's behind this"** section. Pause on the three cards for ~2 seconds so the chips are readable (`STUDIO · LIVE SHIPPING · PROTOTYPE`).
+**Show:** the phone modal is still visible. **Click the red end-call button**. Modal closes, trace is on screen.
+
+**Say (with confidence — list the chain):**
+
+> *"In sixteen seconds: his Sentinel agent detected the pattern. The Family Health Graph recalled his father's heart attack at fifty-eight and his current medication. The Clinician grounded against the actual A-H-A two-thousand-twenty-five guideline. The Diplomat sent a consent-gated message to Sarah's Diplomat. Her Concierge booked a doctor for Tuesday. And then her father got a call — voice generated by Gemini, spoken by Cloud Text-to-Speech, played inside the browser. No Twilio. No telephony provider. Everything you just heard is Google."*
+
+---
+
+### 🎬 1:52 — Pregnancy — fast pass (20 sec)
+
+**Show:** scroll back up to the scenarios row.
+
+**Say (set up, then click):**
+
+> *"Same pattern, different cohort. Emma's glucose pattern matches an early gestational-diabetes signal — and her Diplomat doesn't just call her doctor. It quietly asks her partner's agent to handle the heavy lifting this week. Watch."*
+
+**[CLICK "The Pregnancy"]**
+
+**Stay silent ~10 seconds.** Let the trace stream. The voice line will render in the trace (no modal for this scenario — that's by design).
+
+**Say (over the final events):**
+
+> *"Same A2A protocol. Same consent grid. Different family member, different agent — coordinated automatically."*
+
+---
+
+### 🎬 2:12 — Who's behind this (25 sec)
+
+**Show:** scroll down to **04 · Who's behind this**. Hold on the three cards so the chips read: `STUDIO · LIVE SHIPPING · PROTOTYPE`.
 
 **Say (slow, calibrated — don't oversell):**
-> "VitaCare is built by Graviti Labs — an independent software studio that ships consumer and B2B health products end-to-end. Our consumer-facing product Vita is already live on the iOS App Store in twenty-three locales — and VitaCare's safety pipeline is inherited directly from it. Vita Praxis, our doctor-facing sibling, is currently in active prototype — designed as the clinic-side endpoint that will receive these same A2A handoffs."
 
-**Optional 5-second click into `/praxis` here:** hover over the *"B2B side (Vita Praxis)"* CTA in the hero, click it, let the doctor-side mock land for 3 seconds, then go back.
+> *"VitaCare is built by Graviti Labs — an independent software studio that ships consumer and B2B health products end-to-end. Our consumer-facing product Vita is already live on the iOS App Store in twenty-three locales — VitaCare's safety pipeline is inherited directly from it. Vita Praxis, our doctor-facing sibling, is in active prototype — designed as the clinic-side endpoint that will receive these same A2A handoffs."*
 
-**Say (continue with the market line):**
-> "Family Tier subscription: twenty-five dollars a month per household. Forty million unpaid caregivers in the US alone — a twelve-billion-dollar addressable market — and Vita's existing twenty-three-locale distribution is the day-zero on-ramp."
+**Optional 5-second click:** click the **"B2B side (Vita Praxis)"** CTA. Let the doctor-side mock land on screen for 3 seconds. Then click back to home.
 
 ---
 
-#### 2:50 — Close (10 seconds)
+### 🎬 2:37 — The business case (15 sec)
 
-**Show:** Back to the hero.
+**Show:** back at the home page, scroll to the trust strip near the top so the numbers are visible.
 
 **Say:**
-> "Six agents per person. A2A across the family. Real grounded reasoning. A phone call that isn't. The world's first agent-to-agent care network — by Graviti Labs."
 
-**Stop recording.** Loom will auto-upload.
+> *"Family Tier subscription: twenty-five dollars per month per household. Forty million unpaid caregivers in the US alone — a twelve-billion-dollar addressable market. And Vita's existing twenty-three-locale distribution is our day-zero on-ramp."*
+
+---
+
+### 🎬 2:52 — Close (8 sec)
+
+**Show:** back at the hero. Hold on the gradient `VitaCare` mark.
+
+**Say (slow, deliberate, this is the closing line):**
+
+> *"One AI per person. A network for the people you love. The world's first agent-to-agent care network. By Graviti Labs."*
+
+**Stop recording.**
 
 ---
 
 ## STEP 3 · Light edit (5 min)
 
-In Loom you can:
-1. **Trim** the start and end if there's awkward silence
-2. **Cut out** any segment where you fluffed — right-click the segment → "Trim"
-3. **Add a title page** at the start — Loom has a 1-click "Add a title" feature with the text:
+In Loom:
+1. **Trim** any awkward silence at the start or end
+2. **Cut** any "let me say that again" segment
+3. **Optional title page:** Loom's 1-click "Add a title" with:
    > **VitaCare**
    > The Agent-to-Agent Care Network
    > Google for Startups AI Agents Challenge
 
-That's it. Don't overthink. Don't add music — voice is enough.
+**Do not add music.** Voice + the Cloud TTS audio + silence are enough — adding music will fight with the Cloud TTS call moment.
 
 ---
 
 ## STEP 4 · Share + paste into Devpost (2 min)
 
-1. In Loom, click **Share** → **Get shareable link** → set "Anyone with the link can view"
-2. Copy the URL — it looks like `https://www.loom.com/share/abc123def456...`
-3. Go to Devpost
-4. In the **Video** field, paste that URL
-5. Save the project
+1. **Share → Get shareable link → Anyone with the link can view**
+2. Copy the URL (`https://www.loom.com/share/...`)
+3. Paste into the **Video** field on Devpost
+4. Save
 
-Done. Loom-hosted videos play inline on Devpost, so the URL works directly — no upload needed.
+Loom videos play inline on Devpost — no upload needed.
 
 ---
 
 ## STEP 5 · IF SOMETHING GOES WRONG MID-RECORD
 
-| Problem | What to do |
+| Problem | Fix |
 |---|---|
-| Cloud TTS audio doesn't play | Click *anywhere* on the page once, then end the call and click The Cascade again. The page needs one user gesture before browsers allow autoplay. |
-| Phone modal doesn't open in ~20 seconds | The scenario hit Gemini overload. End the recording. Wait 30 seconds. Refresh the page. Click anywhere once. Try again. |
-| The trace shows fewer cards than my script implies | Some cards appear in sequence; the script's order should still match within ~5 seconds. Just say what you see on screen. |
-| You said the wrong thing | Loom lets you trim. Either say "let me say that again" and continue, or trim in the editor. |
+| Cloud TTS audio doesn't play | Click anywhere on the page once, end the call, click **The Cascade** again. Browsers need one user gesture before allowing autoplay. |
+| Phone modal doesn't open within ~25 seconds | Gemini overload. End the recording. Wait 30 sec. Refresh the page. Click anywhere once. Try again. |
+| Trace events arrive slower than the script implies | Pause your narration. Wait for the event. Continue. The script's *order* matters; the *timing* is flexible. |
+| You fluffed a line | Say *"let me say that again"* and continue. Trim in Loom after. |
 
 ---
 
-## STEP 6 · Final shipping checklist before you call it done
+## STEP 6 · Final shipping checklist
 
-- [ ] Video plays end-to-end with no awkward silences > 3s
-- [ ] The phone call's audio is clearly audible
-- [ ] You said the words "world's first agent-to-agent care network" at least once
-- [ ] You said the words "100% Google stack" or "Pure Google" at least once
-- [ ] Total runtime is **between 2:45 and 3:15** (Devpost's preferred range)
+- [ ] Total runtime is **between 2:45 and 3:15**
+- [ ] **You stayed silent while the Cloud TTS audio played.** This is the single most important rule. Don't talk over the agent voice.
+- [ ] You said the words **"world's first agent-to-agent care network"** at least once
+- [ ] You said **"100% Google stack"** or **"Pure Google"** at least once
+- [ ] The Cloud TTS call audio is clearly audible
 - [ ] Loom share link is set to **public / anyone with the link**
-- [ ] Pasted into the Devpost Video field
+- [ ] Pasted into Devpost Video field
 
 You're done. Go submit.
+
+---
+
+## 🎯 Why this structure beats narrating-during-events
+
+| Narrating *during* the run | Narrating *around* the run |
+|---|---|
+| Demo runs in 16 seconds — you can't fit the explanation | You explain *before*, watch *during*, recap *after* — natural pacing |
+| You talk over the Cloud TTS voice (the wow!) | The agent voice gets its own moment — and lands as a real call |
+| Feels rushed and cluttered | Feels confident and cinematic |
+| Viewers can't process events + your voice at the same time | One stimulus at a time → comprehension up, retention up |
+
+This is exactly how Apple, Linear, and Stripe demo products. **Show the story. Then say what just happened.**
