@@ -1,3 +1,5 @@
+"use client";
+
 /* /pitch — 5 slides. Print-friendly (each slide forces a page break).
  * Open in a browser, hit Cmd-P → Save as PDF, you have the deck. */
 
