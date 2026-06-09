@@ -88,7 +88,7 @@ Read the script below ALOUD while clicking. Don't worry about perfection — you
 **Say (immediately):**
 > "Watch what happens when Robert's blood pressure cuff reports elevated readings three mornings in a row."
 
-**Now stop talking and let the trace stream for ~8 seconds.** The sentinel events will populate, then the Family Health Graph card will land with score bars.
+**Now stop talking and let the trace stream for ~4-5 seconds.** The sentinel events will populate, then the Family Health Graph card will land with score bars and the live graph visualization below it.
 
 **When the FHG card appears, say:**
 > "His Family Health Graph just recalled the most important context — his father died of a heart attack at fifty-eight, and Robert is currently on amlodipine."
@@ -96,7 +96,7 @@ Read the script below ALOUD while clicking. Don't worry about perfection — you
 **A few seconds later the Clinician card lands with the AHA/ACC citation.**
 
 **Say:**
-> "His Clinician agent — Gemini 2.5 Pro with Google Search Grounding — flags Stage 2 hypertension and cites the actual current AHA/ACC guideline. The citation pills are clickable to real sources."
+> "His Clinician agent — Gemini 2.5 with Google Search Grounding — flags Stage 2 hypertension and cites the actual current AHA/ACC guideline. The citation pills are clickable to real sources."
 
 **The Diplomat card appears with `Robert → Sarah`.**
 
@@ -201,7 +201,7 @@ Done. Loom-hosted videos play inline on Devpost, so the URL works directly — n
 | Problem | What to do |
 |---|---|
 | Cloud TTS audio doesn't play | Click *anywhere* on the page once, then end the call and click The Cascade again. The page needs one user gesture before browsers allow autoplay. |
-| Phone modal doesn't open | The scenario hit a Gemini 503. End the recording. Wait 30 seconds. Refresh the page. Click anywhere once. Try again. |
+| Phone modal doesn't open in ~20 seconds | The scenario hit Gemini overload. End the recording. Wait 30 seconds. Refresh the page. Click anywhere once. Try again. |
 | The trace shows fewer cards than my script implies | Some cards appear in sequence; the script's order should still match within ~5 seconds. Just say what you see on screen. |
 | You said the wrong thing | Loom lets you trim. Either say "let me say that again" and continue, or trim in the editor. |
 
