@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push: { branches: [main] }
+  pull_request: { branches: [main] }
+
+jobs:
+  agents-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install (agents)
+        working-directory: agents
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Run tests
+        working-directory: agents
+        run: pytest -q
+
+  web-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Build (web)
+        working-directory: web
+        run: |
+          npm ci --no-audit --no-fund
+          NEXT_PUBLIC_AGENT_API=https://vitacare-agents-205100594497.europe-west1.run.app npm run build
