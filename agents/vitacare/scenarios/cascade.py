@@ -43,9 +43,11 @@ class CascadeScenario(Scenario):
             await self.beat()
 
         # FHG semantic recall — pull cross-generational + longitudinal context
-        # for the Clinician. Uses real Gemini embeddings (3072-d, cosine sim).
+        yield AgentEvent(kind="fhg.thinking", persona="robert", payload={
+            "query": "elevated BP + family CV history",
+        })
         fhg = get_graph()
-        recalled = fhg.family_pattern("elevated blood pressure cardiovascular risk premature MI hypertension")
+        recalled = await fhg.family_pattern("elevated blood pressure cardiovascular risk premature MI hypertension")
         yield AgentEvent(kind="fhg.recall", persona="robert", payload={
             "query": "elevated BP + family CV history",
             "hits": recalled,
@@ -53,6 +55,10 @@ class CascadeScenario(Scenario):
         })
         await self.beat(0.3)
 
+        yield AgentEvent(kind="clinician.thinking", persona="robert", payload={
+            "model": "gemini-2.5-pro",
+            "grounded": True,
+        })
         assessment = await robert.clinician.assess(trigger or {}, history=recalled)
         yield AgentEvent(kind="clinician.assessment", persona="robert", payload=assessment)
         await self.beat()
@@ -72,6 +78,10 @@ class CascadeScenario(Scenario):
         yield AgentEvent(kind="concierge.gp_booked", persona="sarah", payload=appt)
         await self.beat()
 
+        yield AgentEvent(kind="voice.thinking", persona="robert", payload={
+            "model": "gemini-2.5-pro",
+            "lang": "en-US",
+        })
         brief = (
             "Draft a 1-2 sentence warm message for Robert (60, dad). Content: "
             "GP appointment booked for Tuesday at 10am, daughter Sarah arranged it, "

@@ -9,9 +9,18 @@ deployment would expose, so the swap to prod is a one-file change.
 The graph is pre-seeded with real medical-history facts per persona so the
 Clinician's grounded reasoning can be augmented with family-specific context
 (e.g. Robert's father died of MI at 58 → tighter BP thresholds).
+
+Reliability:
+- Seeding is done in PARALLEL (asyncio.gather) so 8 facts take ~1 round-trip
+  instead of 8.
+- Per-embed timeout = 8s; on failure the fact is stored without an embedding
+  and simply scored 0.0 — the scenario never hangs because of FHG.
+- The whole seed happens on FastAPI startup so the first scenario click is
+  fast.
 """
 from __future__ import annotations
 
+import asyncio
 import logging
 import math
 from dataclasses import dataclass, field
@@ -23,6 +32,7 @@ from ..llm import client as gemini_client
 logger = logging.getLogger("vitacare.fhg")
 
 EMBED_MODEL = "gemini-embedding-001"  # 3072-d, current best
+EMBED_TIMEOUT_S = 8.0
 
 
 @dataclass
@@ -53,12 +63,21 @@ def _cosine(a: list[float], b: list[float]) -> float:
     return dot / (na * nb) if na and nb else 0.0
 
 
-def _embed_one(text: str) -> list[float]:
+def _embed_one_sync(text: str) -> list[float]:
     try:
         r = gemini_client().models.embed_content(model=EMBED_MODEL, contents=text)
         return list(r.embeddings[0].values)
     except Exception as e:  # noqa: BLE001
         logger.warning("FHG embed failed for %r: %s", text[:60], e)
+        return []
+
+
+async def _embed_one(text: str) -> list[float]:
+    """Async wrapper with timeout — runs the blocking SDK call in a worker thread."""
+    try:
+        return await asyncio.wait_for(asyncio.to_thread(_embed_one_sync, text), timeout=EMBED_TIMEOUT_S)
+    except asyncio.TimeoutError:
+        logger.warning("FHG embed timeout (%.1fs) for %r", EMBED_TIMEOUT_S, text[:60])
         return []
 
 
@@ -75,13 +94,12 @@ class FamilyHealthGraph:
 
     # --- writes ---------------------------------------------------------
 
-    def add(self, fact: Fact) -> None:
-        if not fact.embedding:
-            fact.embedding = _embed_one(fact.text)
+    def add_local(self, fact: Fact) -> None:
+        """Append a fact whose embedding has already been computed."""
         self._facts.append(fact)
 
-    def seed_family(self) -> None:
-        """Pre-load realistic family-history facts so the demo has substance."""
+    async def seed_family(self) -> None:
+        """Pre-load realistic family-history facts. Embeddings are computed in PARALLEL."""
         if self._facts:
             return
         seeds: list[Fact] = [
@@ -102,20 +120,22 @@ class FamilyHealthGraph:
             Fact(persona="sarah", kind="symptom",
                  text="Sarah logged elevated anxiety markers (mental_health, consent-locked)."),
         ]
-        for f in seeds:
-            self.add(f)
-        logger.info("FHG seeded %d facts (3 personas)", len(seeds))
+        # PARALLEL embed — 8 facts in one round-trip instead of 8.
+        embeddings = await asyncio.gather(*[_embed_one(f.text) for f in seeds])
+        for f, e in zip(seeds, embeddings):
+            f.embedding = e
+            self.add_local(f)
+        logger.info("FHG seeded %d facts (3 personas) in parallel", len(seeds))
 
     # --- reads ----------------------------------------------------------
 
-    def recall(self, query: str, *, persona: str | None = None, kinds: list[str] | None = None, k: int = 3) -> list[dict[str, Any]]:
-        """Semantic recall — returns top-k facts by cosine similarity to ``query``.
-
-        ``persona`` filters to a specific family member; ``kinds`` filters fact types.
-        """
-        q_vec = _embed_one(query)
+    async def recall(self, query: str, *, persona: str | None = None, kinds: list[str] | None = None, k: int = 3) -> list[dict[str, Any]]:
+        """Semantic recall — returns top-k facts by cosine similarity to ``query``."""
+        q_vec = await _embed_one(query)
         if not q_vec:
-            return []
+            # Embedding unavailable — fall back to recent facts so the scenario keeps moving.
+            fallback = [f for f in self._facts if (not persona or f.persona == persona)]
+            return [{"score": 0.0, **f.to_dict()} for f in fallback[:k]]
         scored: list[tuple[float, Fact]] = []
         for f in self._facts:
             if persona and f.persona != persona:
@@ -123,49 +143,35 @@ class FamilyHealthGraph:
             if kinds and f.kind not in kinds:
                 continue
             if f.kind == "symptom" and "mental_health" in f.text:
-                # Respect the consent lock — mental_health stays locked unless explicit grant
                 continue
             s = _cosine(q_vec, f.embedding)
             scored.append((s, f))
         scored.sort(key=lambda t: t[0], reverse=True)
         return [{"score": round(s, 3), **f.to_dict()} for s, f in scored[:k]]
 
-    def family_pattern(self, query: str) -> list[dict[str, Any]]:
+    async def family_pattern(self, query: str) -> list[dict[str, Any]]:
         """Recall across ALL personas — surfaces cross-generational matches."""
-        return self.recall(query, persona=None, k=5)
-
-    def cross_generational_signal(self, target_persona: str) -> list[str]:
-        """Return notable cross-generational signals affecting ``target_persona``.
-
-        Implemented as a recall across the family graph for the target's
-        current relevant context, then a heuristic on returned facts.
-        """
-        seeds_by_persona = {
-            "robert": "cardiovascular risk premature MI hypertension",
-            "emma":   "gestational diabetes glucose pregnancy GDM",
-            "sarah":  "caregiver burden coordination",
-        }
-        seed = seeds_by_persona.get(target_persona, "")
-        if not seed:
-            return []
-        hits = self.recall(seed, persona=None, k=5)
-        signals: list[str] = []
-        for h in hits:
-            if h["persona"] != target_persona:
-                signals.append(f"family signal ({h['persona']}, score={h['score']}): {h['text']}")
-        return signals
+        return await self.recall(query, persona=None, k=5)
 
 
-# Module-level singleton — pre-seeded lazily on first import.
+# Module-level singleton. Seeded once at FastAPI startup (see main.py lifespan).
 _GRAPH: FamilyHealthGraph | None = None
 
 
 def get_graph() -> FamilyHealthGraph:
+    """Return the singleton. Empty until ``ensure_seeded()`` has been awaited."""
     global _GRAPH
     if _GRAPH is None:
         _GRAPH = FamilyHealthGraph()
+    return _GRAPH
+
+
+async def ensure_seeded() -> FamilyHealthGraph:
+    """Idempotent seeder — safe to call multiple times."""
+    g = get_graph()
+    if not g._facts:
         try:
-            _GRAPH.seed_family()
+            await g.seed_family()
         except Exception as e:  # noqa: BLE001
             logger.warning("FHG seeding failed: %s", e)
-    return _GRAPH
+    return g

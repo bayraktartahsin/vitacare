@@ -35,8 +35,11 @@ class PregnancyScenario(Scenario):
             yield ev
             await self.beat()
 
+        yield AgentEvent(kind="fhg.thinking", persona="emma", payload={
+            "query": "GDM family history + recent glucose pattern",
+        })
         fhg = get_graph()
-        recalled = fhg.family_pattern("gestational diabetes glucose pregnancy GDM family history")
+        recalled = await fhg.family_pattern("gestational diabetes glucose pregnancy GDM family history")
         yield AgentEvent(kind="fhg.recall", persona="emma", payload={
             "query": "GDM family history + recent glucose pattern",
             "hits": recalled,
@@ -44,6 +47,10 @@ class PregnancyScenario(Scenario):
         })
         await self.beat(0.3)
 
+        yield AgentEvent(kind="clinician.thinking", persona="emma", payload={
+            "model": "gemini-2.5-pro",
+            "grounded": True,
+        })
         assessment = await emma.clinician.assess(trigger or {}, history=recalled)
         yield AgentEvent(kind="clinician.assessment", persona="emma", payload=assessment)
         await self.beat()

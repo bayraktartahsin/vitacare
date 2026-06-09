@@ -11,6 +11,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+from contextlib import asynccontextmanager
 
 import uvicorn
 from fastapi import FastAPI, HTTPException
@@ -21,13 +22,28 @@ from sse_starlette.sse import EventSourceResponse
 
 from .a2a.messages import A2AMessage
 from .config import settings
+from .fhg import ensure_seeded
 from .personas import PERSONAS, get_persona
 from .scenarios import SCENARIOS
 
 logger = logging.getLogger("vitacare")
 logging.basicConfig(level=settings.log_level)
 
-app = FastAPI(title="VitaCare Agents", version="0.1.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Pre-seed the Family Health Graph at startup so the first scenario click
+    # doesn't pay an 8-fact embedding round-trip in the user's face.
+    logger.info("startup: seeding Family Health Graph...")
+    try:
+        await asyncio.wait_for(ensure_seeded(), timeout=20.0)
+        logger.info("startup: FHG seeded.")
+    except asyncio.TimeoutError:
+        logger.warning("startup: FHG seed timed out — scenarios will fall back to recent-facts mode.")
+    yield
+
+
+app = FastAPI(title="VitaCare Agents", version="0.1.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
