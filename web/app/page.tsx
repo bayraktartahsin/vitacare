@@ -95,6 +95,34 @@ export default function Home() {
             Every family member runs a personal swarm of six health agents. Their Diplomats coordinate across people over Google's A2A protocol. Their Clinicians ground in real Google Search results. Their Voice agents call them — in-browser, in real audio.
           </p>
 
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <a
+              href="/diagram"
+              className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-4 py-2 text-sm font-medium text-accent transition hover:bg-accent/15 hover:gap-3"
+            >
+              <span>↗</span> Architecture
+            </a>
+            <a
+              href="/pitch"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-panel/60 px-4 py-2 text-sm font-medium text-ink2 transition hover:text-ink"
+            >
+              <span>↗</span> 5-slide pitch
+            </a>
+            <a
+              href="/praxis"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-panel/60 px-4 py-2 text-sm font-medium text-ink2 transition hover:text-ink"
+            >
+              <span>↗</span> B2B side (Vita Praxis)
+            </a>
+            <a
+              href="https://github.com/bayraktartahsin/vitacare"
+              target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-panel/60 px-4 py-2 text-sm font-medium text-ink2 transition hover:text-ink"
+            >
+              <span>↗</span> GitHub
+            </a>
+          </div>
+
           {/* TRUST STRIP */}
           <div className="mt-10 grid grid-cols-2 gap-4 rounded-2xl border border-line bg-panel/50 p-5 backdrop-blur md:grid-cols-4">
             {STATS.map(s => (
@@ -150,10 +178,32 @@ export default function Home() {
           </section>
         )}
 
+        {/* SAFETY & COMPLIANCE */}
+        <section className="mt-14">
+          <SectionHeader n="03" eyebrow="Safety & compliance" title="Healthcare-grade by design, from day one." />
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <SafetyCard
+              icon="🚫"
+              title="Never diagnoses"
+              body="The Clinician agent is hard-bounded to 'consider seeing a doctor.' It surfaces guideline citations, never a diagnosis. Inherited from Vita's shipping iOS safety pipeline."
+            />
+            <SafetyCard
+              icon="🛡"
+              title="ConsentGrid enforced at protocol layer"
+              body="Per-relationship × per-data-category permissions on every A2A handshake. Mental-health facts stay locked at the retrieval layer, not just at the UI. Verified by 14 pytest tests in the repo."
+            />
+            <SafetyCard
+              icon="📜"
+              title="Auditable everything"
+              body="Every A2A message carries an envelope (from / to / intent / category / id) and is JSON-serialisable for the audit log. Every Clinician assessment carries clickable Google Search Grounding citations."
+            />
+          </div>
+        </section>
+
         {/* TEAM / CREDIBILITY */}
-        <section className="mt-20 rounded-2xl border border-line bg-panel/40 p-6 backdrop-blur md:p-8">
+        <section className="mt-14 rounded-2xl border border-line bg-panel/40 p-6 backdrop-blur md:p-8">
           <div className="flex items-baseline gap-3">
-            <span className="font-mono text-xs font-semibold text-accent">03</span>
+            <span className="font-mono text-xs font-semibold text-accent">04</span>
             <span className="text-[11px] font-medium uppercase tracking-[0.25em] text-ink2">Who's behind this</span>
           </div>
           <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -208,6 +258,16 @@ export default function Home() {
         </footer>
       </div>
     </main>
+  );
+}
+
+function SafetyCard({ icon, title, body }: { icon: string; title: string; body: string }) {
+  return (
+    <div className="rounded-xl border border-line bg-panel p-5">
+      <div className="text-2xl">{icon}</div>
+      <div className="mt-2 text-base font-semibold tracking-tight">{title}</div>
+      <div className="mt-2 text-[13px] leading-relaxed text-ink2">{body}</div>
+    </div>
   );
 }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FhgGraph } from "./FhgGraph";
 
 type Citation = { title: string; uri: string };
 
@@ -136,7 +137,12 @@ export function EventCard({ kind, data, index }: Props) {
           )}
 
           {kind === "fhg.recall" && Array.isArray(data?.hits) && (
-            <FhgBody data={data} />
+            <>
+              <FhgBody data={data} />
+              <div className="mt-3">
+                <FhgGraph hits={data.hits} query={data?.query} />
+              </div>
+            </>
           )}
 
           {kind === "voice.draft" && data?.text && (
