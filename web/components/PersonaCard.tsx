@@ -1,24 +1,55 @@
-type Props = { id: string; name: string; role: string; cohort: string };
-
-const COHORT_COLOR: Record<string, string> = {
-  Pregnancy: "bg-bad/20 text-bad",
-  Senior: "bg-warn/20 text-warn",
-  Adult: "bg-ok/20 text-ok",
-  Family: "bg-accent/20 text-accent",
+type Props = {
+  id: string;
+  name: string;
+  role: string;
+  cohort: string;
+  gradient: string;
 };
 
-export function PersonaCard({ id, name, role, cohort }: Props) {
+const COHORT_COLOR: Record<string, string> = {
+  Pregnancy: "bg-bad/15 text-bad ring-bad/30",
+  Senior:    "bg-warn/15 text-warn ring-warn/30",
+  Adult:     "bg-ok/15 text-ok ring-ok/30",
+  Family:    "bg-accent/15 text-accent ring-accent/30",
+};
+
+const SUBAGENTS = ["Sentinel", "Chronicler", "Clinician", "Concierge", "Diplomat", "Voice"];
+
+export function PersonaCard({ id, name, role, cohort, gradient }: Props) {
+  const initial = name[0];
   return (
-    <div className="rounded-xl border border-line bg-panel p-5">
-      <div className="flex items-center justify-between">
-        <div className="text-2xl font-semibold">{name}</div>
-        <span className={`rounded-full px-2 py-0.5 text-xs ${COHORT_COLOR[cohort] || ""}`}>
+    <div className="group relative overflow-hidden rounded-2xl border border-line bg-panel p-6 transition-all hover:border-ink2/40">
+      {/* Soft halo */}
+      <div className={`absolute -right-12 -top-12 h-32 w-32 rounded-full bg-gradient-to-br ${gradient} opacity-10 blur-2xl transition group-hover:opacity-20`} />
+
+      <div className="relative flex items-start justify-between">
+        <div
+          className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${gradient} text-2xl font-semibold text-white shadow-md`}
+        >
+          {initial}
+        </div>
+        <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-widest ring-1 ${COHORT_COLOR[cohort] || ""}`}>
           {cohort}
         </span>
       </div>
-      <div className="mt-1 text-sm text-ink2">{role}</div>
-      <div className="mt-4 text-xs text-ink2">
-        Sub-agents: <span className="text-ink">6 active</span> · Persona id: <code>{id}</code>
+
+      <div className="relative mt-4 text-2xl font-semibold tracking-tight">{name}</div>
+      <div className="relative mt-1 text-sm text-ink2">{role}</div>
+
+      <div className="relative mt-5 flex flex-wrap gap-1">
+        {SUBAGENTS.map(s => (
+          <span
+            key={s}
+            className="rounded-md bg-white/[0.04] px-1.5 py-0.5 text-[10px] text-ink2"
+          >
+            {s}
+          </span>
+        ))}
+      </div>
+
+      <div className="relative mt-4 flex items-center justify-between font-mono text-[10px] text-ink2/70">
+        <span>persona id <span className="text-ink2">{id}</span></span>
+        <span>6 agents · 1 consent grid</span>
       </div>
     </div>
   );
